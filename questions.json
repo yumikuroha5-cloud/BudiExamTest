@@ -1,7 +1,147 @@
-{"title":"General Knowledge Sample","subject":"General Knowledge","duration":15,"questions":[
-{"id":1,"type":"multiple_choice","question":"What is the capital of France?","options":{"A":"Berlin","B":"Madrid","C":"Paris","D":"Rome","E":"Lisbon"},"answer":"C","points":10,"explanation":"Paris is the capital and largest city of France."},
-{"id":2,"type":"multiple_choice","question":"Which planet is known as the Red Planet?","options":{"A":"Venus","B":"Mars","C":"Jupiter","D":"Mercury","E":"Saturn"},"answer":"B","points":10,"explanation":"Iron oxide on its surface gives Mars a red colour."},
-{"id":3,"type":"multiple_choice","question":"What is 12 × 12?","options":{"A":"124","B":"132","C":"144","D":"156","E":"122"},"answer":"C","points":10,"explanation":"12 × 12 = 144."},
-{"id":4,"type":"multiple_choice","question":"Which gas do plants absorb for photosynthesis?","options":{"A":"Oxygen","B":"Nitrogen","C":"Hydrogen","D":"Carbon dioxide","E":"Helium"},"answer":"D","points":10,"explanation":"Plants take in carbon dioxide and release oxygen."},
-{"id":5,"type":"essay","question":"Explain briefly how photosynthesis works.","expected_answer":"Plants use sunlight, water and carbon dioxide to produce glucose and oxygen in the chloroplasts using chlorophyll.","keywords":["sunlight","water","carbon dioxide","glucose","oxygen","chlorophyll"],"points":30,"rubric":[{"criterion":"Correct inputs and outputs","points":20},{"criterion":"Mentions chloroplast/chlorophyll","points":10}]},
-{"id":6,"type":"essay","question":"Describe the water cycle.","expected_answer":"Water evaporates, condenses into clouds, falls as precipitation and collects in rivers, lakes and oceans.","keywords":["evaporation","condensation","precipitation","collection"],"points":30,"rubric":[{"criterion":"Main stages","points":20},{"criterion":"Clear explanation","points":10}]}]}
+{
+  "title": "ASAS Day 2 Kelas X",
+  "duration": 45,
+  "subjects": [
+    {
+      "name": "Pendidikan Pancasila",
+      "questions": [
+        {
+          "id": 1,
+          "type": "multiple_choice",
+          "question": "Nilai dasar Pancasila yang menekankan pengakuan terhadap harkat, martabat, dan hak asasi setiap manusia terdapat pada sila ke-...",
+          "options": {
+            "A": "Pertama",
+            "B": "Kedua",
+            "C": "Ketiga",
+            "D": "Keempat",
+            "E": "Kelima"
+          },
+          "answer": "B",
+          "points": 25,
+          "explanation": "Sila kedua, Kemanusiaan yang Adil dan Beradab, menjunjung tinggi martabat dan hak asasi manusia."
+        },
+        {
+          "id": 2,
+          "type": "multiple_choice",
+          "question": "Musyawarah untuk mencapai mufakat dalam pengambilan keputusan bersama merupakan perwujudan sila ke-...",
+          "options": {
+            "A": "Pertama",
+            "B": "Kedua",
+            "C": "Ketiga",
+            "D": "Keempat",
+            "E": "Kelima"
+          },
+          "answer": "D",
+          "points": 25,
+          "explanation": "Sila keempat mengutamakan hikmat kebijaksanaan dalam permusyawaratan/perwakilan."
+        },
+        {
+          "id": 3,
+          "type": "essay",
+          "question": "Jelaskan dua contoh penerapan nilai Persatuan Indonesia di lingkungan sekolah!",
+          "expected_answer": "Menghormati teman dari berbagai daerah dan budaya, serta bekerja sama dalam kerja bakti atau diskusi kelompok tanpa membeda-bedakan.",
+          "keywords": ["menghormati", "budaya", "kerja sama", "kelompok", "perbedaan"],
+          "points": 50,
+          "rubric": [
+            { "criterion": "Memberikan dua contoh relevan di sekolah", "points": 30 },
+            { "criterion": "Kejelasan penjelasan", "points": 20 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bahasa Inggris",
+      "questions": [
+        {
+          "id": 4,
+          "type": "multiple_choice",
+          "question": "Choose the correct verb form: 'By the time the teacher arrived, the students ___ the group assignment.'",
+          "options": {
+            "A": "finish",
+            "B": "are finishing",
+            "C": "had finished",
+            "D": "will finish",
+            "E": "have finish"
+          },
+          "answer": "C",
+          "points": 25,
+          "explanation": "Past Perfect ('had finished') describes an action completed before another past action ('arrived')."
+        },
+        {
+          "id": 5,
+          "type": "multiple_choice",
+          "question": "What is the main communicative purpose of a Narrative Text?",
+          "options": {
+            "A": "To explain how to operate a machine",
+            "B": "To entertain or amuse the readers with a story",
+            "C": "To persuade readers to buy a product",
+            "D": "To report factual scientific observations",
+            "E": "To describe a specific place in detail"
+          },
+          "answer": "B",
+          "points": 25,
+          "explanation": "Narrative texts aim to entertain readers through a sequence of events with complication and resolution."
+        },
+        {
+          "id": 6,
+          "type": "essay",
+          "question": "Write a short paragraph (3–4 sentences) describing your favorite study habit and why it helps you.",
+          "expected_answer": "My favorite study habit is summarizing notes in my own words while listening to calm instrumental music. It helps me focus and remember key concepts longer.",
+          "keywords": ["study", "focus", "notes", "practice", "helps", "because"],
+          "points": 50,
+          "rubric": [
+            { "criterion": "Clear description of habit and benefit", "points": 30 },
+            { "criterion": "Grammar and coherence", "points": 20 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Olah Raga (PJOK)",
+      "questions": [
+        {
+          "id": 7,
+          "type": "multiple_choice",
+          "question": "Komponen kebugaran jasmani yang berkaitan dengan kemampuan otot menahan beban dalam waktu lama disebut...",
+          "options": {
+            "A": "Kelincahan (Agility)",
+            "B": "Daya tahan otot (Muscular endurance)",
+            "C": "Kecepatan (Speed)",
+            "D": "Keseimbangan (Balance)",
+            "E": "Kelentukan (Flexibility)"
+          },
+          "answer": "B",
+          "points": 25,
+          "explanation": "Daya tahan otot adalah kapasitas otot untuk melakukan kontraksi berulang-ulang tanpa cepat lelah."
+        },
+        {
+          "id": 8,
+          "type": "multiple_choice",
+          "question": "Tujuan utama melakukan pemanasan (warming up) sebelum berolahraga adalah...",
+          "options": {
+            "A": "Menurunkan suhu tubuh secara drastis",
+            "B": "Menghentikan aliran darah ke otot",
+            "C": "Meningkatkan elastisitas otot dan mencegah cedera",
+            "D": "Menguras seluruh cadangan energi sebelum bertanding",
+            "E": "Menggantikan latihan inti"
+          },
+          "answer": "C",
+          "points": 25,
+          "explanation": "Pemanasan meningkatkan aliran darah dan suhu otot sehingga mengurangi risiko cedera."
+        },
+        {
+          "id": 9,
+          "type": "essay",
+          "question": "Sebutkan tiga manfaat rutin melakukan aktivitas aerobik seperti lari atau bersepeda bagi kesehatan jantung dan paru-paru.",
+          "expected_answer": "Meningkatkan kapasitas paru-paru, memperkuat otot jantung, dan melancarkan peredaran darah ke seluruh tubuh.",
+          "keywords": ["jantung", "paru", "peredaran darah", "stamina", "oksigen"],
+          "points": 50,
+          "rubric": [
+            { "criterion": "Menyebutkan 3 manfaat kardiorespirasi", "points": 35 },
+            { "criterion": "Ketepatan istilah", "points": 15 }
+          ]
+        }
+      ]
+    }
+  ]
+}
