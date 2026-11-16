@@ -1,0 +1,203 @@
+{
+  "title": "ASAS Day 2 Kelas X (Sample)",
+  "duration": 45,
+  "subjects": [
+    {
+      "name": "Bahasa Inggris",
+      "duration": 15,
+      "questions": [
+        {
+          "id": 1,
+          "type": "multiple_choice",
+          "question": "Choose the correct verb form: 'She _____ to the library every afternoon to prepare for her exams.'",
+          "options": {
+            "A": "go",
+            "B": "goes",
+            "C": "going",
+            "D": "gone",
+            "E": "is go"
+          },
+          "answer": "B",
+          "points": 20,
+          "explanation": "In the Simple Present Tense, third-person singular subjects ('She') take the -es verb ending ('goes') for habitual actions."
+        },
+        {
+          "id": 2,
+          "type": "multiple_choice",
+          "question": "What is the main communicative purpose of a Narrative Text?",
+          "options": {
+            "A": "To persuade readers to buy a product",
+            "B": "To explain how a natural phenomenon happens",
+            "C": "To amuse or entertain readers with a story",
+            "D": "To describe a specific place in detail",
+            "E": "To give step-by-step instructions"
+          },
+          "answer": "C",
+          "points": 20,
+          "explanation": "Narrative texts aim to entertain or amuse readers through a sequence of events with a complication and resolution."
+        },
+        {
+          "id": 3,
+          "type": "multiple_choice",
+          "question": "Which expression is most appropriate to congratulate a classmate who won a debate competition?",
+          "options": {
+            "A": "I am sorry to hear that.",
+            "B": "Congratulations on your well-deserved victory!",
+            "C": "Could you please repeat that?",
+            "D": "I completely disagree with your point.",
+            "E": "Better luck next time."
+          },
+          "answer": "B",
+          "points": 20,
+          "explanation": "'Congratulations on your well-deserved victory!' directly expresses praise and happiness for someone's achievement."
+        },
+        {
+          "id": 4,
+          "type": "essay",
+          "question": "Write a short paragraph (2–3 sentences) describing your favorite study habit and why it helps you.",
+          "expected_answer": "My favorite study habit is summarizing notes and practicing past questions in a quiet room because it helps me remember key concepts and stay focused.",
+          "keywords": [
+            "study",
+            "notes",
+            "practice",
+            "focus",
+            "remember",
+            "helps"
+          ],
+          "points": 40,
+          "rubric": [
+            {
+              "criterion": "Mentions a clear study habit",
+              "points": 20
+            },
+            {
+              "criterion": "Explains the benefit clearly",
+              "points": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pendidikan Pancasila",
+      "duration": 15,
+      "questions": [
+        {
+          "id": 1,
+          "type": "multiple_choice",
+          "question": "Nilai-nilai Pancasila yang bersifat tetap dan tidak dapat diubah karena melekat pada kelangsungan hidup negara disebut nilai...",
+          "options": {
+            "A": "Instrumental",
+            "B": "Praksis",
+            "C": "Dasar",
+            "D": "Relatif",
+            "E": "Sementara"
+          },
+          "answer": "C",
+          "points": 25,
+          "explanation": "Nilai Dasar (Ketuhanan, Kemanusiaan, Persatuan, Kerakyatan, dan Keadilan) bersifat universal, tetap, dan melekat pada pembukaan UUD NRI Tahun 1945."
+        },
+        {
+          "id": 2,
+          "type": "multiple_choice",
+          "question": "Mengutamakan musyawarah mufakat dalam mengambil keputusan bersama di kelas merupakan pengamalan Pancasila sila ke-...",
+          "options": {
+            "A": "Pertama",
+            "B": "Kedua",
+            "C": "Ketiga",
+            "D": "Keempat",
+            "E": "Kelima"
+          },
+          "answer": "D",
+          "points": 25,
+          "explanation": "Sila ke-4 ('Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan') menekankan musyawarah untuk mufakat."
+        },
+        {
+          "id": 3,
+          "type": "essay",
+          "question": "Berikan dua contoh penerapan semangat Bhinneka Tunggal Ika di lingkungan sekolah!",
+          "expected_answer": "Menghormati teman yang berbeda agama dan suku, serta bekerja sama dalam kelompok belajar tanpa membeda-bedakan latar belakang.",
+          "keywords": [
+            "menghormati",
+            "teman",
+            "agama",
+            "suku",
+            "kerja sama",
+            "toleransi"
+          ],
+          "points": 50,
+          "rubric": [
+            {
+              "criterion": "Menyebutkan 2 contoh konkret di sekolah",
+              "points": 30
+            },
+            {
+              "criterion": "Relevan dengan persatuan dan toleransi",
+              "points": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Olah Raga (PJOK)",
+      "duration": 15,
+      "questions": [
+        {
+          "id": 1,
+          "type": "multiple_choice",
+          "question": "Komponen kebugaran jasmani yang berkaitan dengan kemampuan otot untuk melakukan kontraksi secara berulang-ulang dalam waktu lama adalah...",
+          "options": {
+            "A": "Kelenturan (flexibility)",
+            "B": "Daya tahan otot (muscular endurance)",
+            "C": "Kecepatan (speed)",
+            "D": "Keseimbangan (balance)",
+            "E": "Kelincahan (agility)"
+          },
+          "answer": "B",
+          "points": 25,
+          "explanation": "Daya tahan otot (muscular endurance) adalah kapasitas otot untuk berkontraksi terus-menerus tanpa mengalami kelelahan berarti."
+        },
+        {
+          "id": 2,
+          "type": "multiple_choice",
+          "question": "Dalam permainan bola basket, teknik mengoper bola dengan cara memantulkannya ke lantai terlebih dahulu disebut...",
+          "options": {
+            "A": "Chest pass",
+            "B": "Overhead pass",
+            "C": "Bounce pass",
+            "D": "Baseball pass",
+            "E": "Lay-up"
+          },
+          "answer": "C",
+          "points": 25,
+          "explanation": "Bounce pass adalah operan pantul yang efektif untuk melewati penjagaan lawan yang bertubuh tinggi."
+        },
+        {
+          "id": 3,
+          "type": "essay",
+          "question": "Jelaskan mengapa pemanasan (warming up) sangat penting dilakukan sebelum berolahraga!",
+          "expected_answer": "Pemanasan meningkatkan suhu tubuh dan aliran darah ke otot sehingga mengurangi risiko cedera dan mempersiapkan tubuh untuk aktivitas fisik.",
+          "keywords": [
+            "suhu",
+            "aliran darah",
+            "otot",
+            "cedera",
+            "persiapan"
+          ],
+          "points": 50,
+          "rubric": [
+            {
+              "criterion": "Menjelaskan pencegahan cedera",
+              "points": 25
+            },
+            {
+              "criterion": "Menjelaskan kesiapan otot/suhu tubuh",
+              "points": 25
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
