@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1d3a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<title>ExamForge</title>
+<style>
+:root{--navy:#0b1d3a;--blue:#3b6ff5;--violet:#7c5cf0;--bg:#f2f5ff;--tx:#0f1b33;--mut:#5f6b8a;--ok:#16a34a;--bad:#dc2626;--bd:#e1e7f5;--sh:0 4px 16px rgba(25,45,110,.08);--sh2:0 12px 30px rgba(25,45,110,.16);--hh:56px}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(180deg,#e6edff 0,var(--bg) 340px) var(--bg);min-height:100vh;color:var(--tx);overflow-x:hidden}
+.ic{flex:none;vertical-align:middle}
+header{background:linear-gradient(120deg,#0b1d3a,#1e3a8a 60%,#3d4fe0);color:#fff;padding:0 14px;height:var(--hh);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:30;box-shadow:0 2px 14px rgba(11,29,58,.35)}
+header img{width:34px;height:34px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.3)}header h1{font-size:1.2rem;margin:0;flex:1;min-width:0;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#net{font-size:.75rem;padding:4px 11px;border-radius:99px;background:#16a34a;white-space:nowrap;font-weight:600}#net.off{background:#d97706}
+#inst{min-height:36px;padding:4px 12px;font-size:.85rem;border-radius:99px}
+.hbtn{min-height:38px;width:40px;padding:0;background:rgba(255,255,255,.15);border:0;color:#fff;border-radius:12px;position:relative}
+.hbtn:hover{background:rgba(255,255,255,.26)}
+.hbtn.on::after{content:"";position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:#34d399;box-shadow:0 0 0 2px #1e3a8a;animation:pl 1.4s infinite}
+@keyframes pl{50%{transform:scale(1.35);opacity:.7}}
+main{max-width:960px;margin:0 auto;padding:14px 12px 24px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:20px;padding:18px;margin-bottom:14px;overflow-wrap:anywhere;box-shadow:var(--sh);scroll-margin-top:calc(var(--hh) + 12px)}
+h2{margin:0 0 8px;font-size:1.1rem}.mut{color:var(--mut);font-size:.9rem}
+.ch{display:flex;align-items:center;gap:10px;font-size:1.15rem}
+.ci{width:36px;height:36px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,var(--blue),var(--violet));flex:none}
+.ci.g{background:linear-gradient(135deg,#10b981,#06b6d4)}
+.tag{font-size:.68rem;font-weight:700;letter-spacing:.6px;padding:2px 9px;border-radius:99px;background:#ffedd5;color:#c2410c}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn,button{font:inherit;min-height:46px;padding:8px 16px;border-radius:14px;border:1px solid var(--bd);background:#fff;color:var(--tx);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,box-shadow .15s,background .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
+.btn:hover,button:hover:not(:disabled){box-shadow:0 4px 12px rgba(25,45,110,.12);border-color:#c5d0ea}
+.btn:active,button:active:not(:disabled){transform:scale(.97)}
+:is(.btn,button,input,textarea):focus-visible{outline:3px solid rgba(59,111,245,.45);outline-offset:2px}
+.pri{background:linear-gradient(135deg,var(--blue),var(--violet));border-color:transparent;color:#fff;font-weight:600;box-shadow:0 4px 12px rgba(59,111,245,.35)}
+.pri:hover:not(:disabled){border-color:transparent;box-shadow:0 6px 16px rgba(59,111,245,.45)}
+.dng{color:var(--bad)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.msg{border-radius:16px;padding:12px 16px;margin-bottom:14px;box-shadow:var(--sh)}.msg.err{background:#fee2e2;color:#7f1d1d}.msg.ok{background:#dcfce7;color:#14532d}.msg ul{margin:6px 0 0;padding-left:20px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.stat{background:#f0f4ff;border-radius:14px;padding:10px 14px;flex:1 1 110px}.stat b{display:block;font-size:1.3rem;color:var(--blue)}
+.hr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 0;border-top:1px solid var(--bd)}.hr>div{flex:1 1 100%;min-width:0}.hr .sc{font-weight:700;color:var(--blue);font-size:1.05rem;background:#e8f0ff;border-radius:99px;padding:2px 12px}.hr>:nth-child(2){margin-right:auto}
+.hr button{min-height:38px;padding:4px 12px;font-size:.9rem}.hr .rt{color:var(--blue);border-color:#c9d8fb;background:#f3f7ff}.hr .rt .ic{margin-right:-2px}
+.sub{margin:18px 0 0;font-size:1rem;color:var(--mut)}
+.bar{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(120deg,#0b1d3a,#1e3a8a);color:#fff;border-radius:16px;padding:12px 18px;margin-bottom:14px;position:sticky;top:calc(var(--hh) + 6px);z-index:4;box-shadow:var(--sh2)}
+.tm{font-variant-numeric:tabular-nums;font-weight:700}.tm.low{color:#fca5a5}
+.qt{font-size:1.1rem;font-weight:600;margin-bottom:12px}.pts{font-size:.75rem;color:var(--mut);font-weight:400;white-space:nowrap}
+.opt{display:flex;width:100%;gap:12px;text-align:left;justify-content:flex-start;margin-bottom:10px;padding:12px 14px;border-radius:16px}.opt b{min-width:28px;height:28px;border-radius:50%;background:#eaf0ff;color:var(--blue);display:inline-flex;align-items:center;justify-content:center;flex:none}
+.opt.sel{border-color:var(--blue);background:#e8f0ff;box-shadow:0 0 0 2px rgba(59,111,245,.2)}.opt.sel b{background:var(--blue);color:#fff}
+textarea{width:100%;min-height:200px;font:inherit;padding:12px;border:1px solid var(--bd);border-radius:14px;resize:vertical}
+.grid{display:flex;flex-wrap:wrap;gap:6px}.grid button{min-height:42px;width:42px;padding:0;border-radius:12px}
+.grid .done{background:#dbeafe;border-color:var(--blue)}.grid .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nav{display:flex;gap:8px;position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 75%,rgba(242,245,255,0));padding:14px 0 8px}.nav button{flex:1}
+.big{font-size:3rem;font-weight:800;color:var(--blue);line-height:1}
+.rv{border-left:5px solid var(--bd)}.rv.ok{border-color:var(--ok)}.rv.no{border-color:var(--bad)}.rv.es{border-color:var(--blue)}
+.ans{background:#f0f4ff;border-radius:12px;padding:8px 12px;margin:6px 0;white-space:pre-wrap}
+input[type=number]{font:inherit;width:90px;padding:8px;border:1px solid var(--bd);border-radius:12px}
+
+/* Dashboard */
+.hero{background:linear-gradient(135deg,#2f6bf0 0,#5b5df0 55%,#8b5cf6 100%);color:#fff;border-radius:24px;padding:20px;margin-bottom:14px;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-50px;top:-60px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.12)}
+.hero>*{position:relative;z-index:1}
+.hero .hi{font-size:.9rem;opacity:.9}
+.hero h2{font-size:1.55rem;line-height:1.2;margin:2px 0 4px}.hero p{margin:0 0 14px;opacity:.9;font-size:.95rem}
+.hs{display:flex;gap:8px}.hs>div{flex:1;background:rgba(255,255,255,.18);border-radius:16px;padding:8px 6px;text-align:center;font-size:.75rem;line-height:1.2}.hs b{display:block;font-size:1.35rem}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px}
+.tile{position:relative;overflow:hidden;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;text-align:left;border:0;color:#fff;padding:16px;min-height:132px;border-radius:22px;box-shadow:var(--sh2);width:100%}
+.tile:hover:not(:disabled){box-shadow:0 16px 34px rgba(25,45,110,.28);transform:translateY(-2px)}
+.tile::after{content:"";position:absolute;right:-30px;bottom:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.16)}
+.tile>*{position:relative;z-index:1}
+.ti{width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.25);display:inline-flex;align-items:center;justify-content:center}
+.tile b{font-size:1.1rem;line-height:1.15}.tile small{font-size:.8rem;opacity:.92;line-height:1.3;overflow-wrap:anywhere}
+.tile.asas{grid-column:1/-1;background:linear-gradient(135deg,#ff8a3d,#f43f8e);min-height:150px}
+.tile.asas b{font-size:1.7rem;letter-spacing:.5px}.tile.asas small{font-size:.9rem}
+.tile.asas .go{margin-top:auto;background:#fff;color:#e11d74;font-weight:700;font-size:.8rem;padding:5px 12px;border-radius:99px;display:inline-flex;align-items:center;gap:4px}
+.tile.hist{background:linear-gradient(135deg,#10b981,#06b6d4)}
+.tile.mus{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
+.flash{animation:fl 1.4s ease-out}
+@keyframes fl{0%{box-shadow:0 0 0 0 rgba(244,63,142,.7)}60%{box-shadow:0 0 0 12px rgba(244,63,142,0)}100%{box-shadow:var(--sh)}}
+
+/* Music player */
+.mp{position:fixed;z-index:40;top:calc(var(--hh) + 8px);right:12px;width:min(360px,calc(100vw - 24px));background:#fff;border:1px solid var(--bd);border-radius:22px;box-shadow:0 18px 44px rgba(11,29,58,.3);padding:16px}
+.mp[hidden]{display:none}
+.mp-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}.mp-h b{flex:1;font-size:1.05rem}
+.mp-h button{min-height:36px;width:36px;padding:0;border-radius:11px}
+.mp-name{display:flex;align-items:center;gap:10px;background:#f0f4ff;border-radius:14px;padding:10px 12px;font-weight:600;overflow-wrap:anywhere;word-break:break-word}
+.mp-name.empty{color:var(--mut);font-weight:400}
+.mp-ctl{display:flex;gap:8px;margin:12px 0}.mp-ctl button{flex:1;padding:8px 6px}
+.mp-vol{display:flex;align-items:center;gap:10px;color:var(--mut)}.mp-vol input{flex:1;accent-color:var(--blue);height:28px;min-width:0}.mp-vol span{min-width:42px;text-align:right;font-variant-numeric:tabular-nums}
+.mp-lp{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.9rem}.mp-lp input{width:20px;height:20px;accent-color:var(--blue)}
+.mp-st{margin:10px 0 0;font-size:.85rem}.mp-st.err{color:var(--bad)}
+
+.lbtn{width:auto;padding:0 10px;gap:5px;font-size:.8rem;font-weight:700}
+.mp{max-height:calc(100vh - var(--hh) - 20px);overflow:auto}
+.mp-ctl{gap:6px}.mp-ctl button{gap:5px;padding:8px 4px;font-size:.9rem}.mp-ctl .sq{flex:0 0 44px}
+.m-list{margin:8px 0 0;max-height:170px;overflow:auto}.m-list:empty{display:none}
+.trk{display:flex;align-items:center;gap:4px;border-radius:12px}.trk.on{background:#eaf0ff}
+.trk .tn{flex:1;min-width:0;justify-content:flex-start;text-align:left;border:0;background:transparent;min-height:40px;padding:4px 8px;gap:10px;box-shadow:none}.trk .tn span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trk .no{width:20px;text-align:center;color:var(--mut);font-size:.8rem}.trk .tx{min-height:36px;width:36px;padding:0;border:0;background:transparent;color:var(--bad);box-shadow:none}
+@media(min-width:700px){main{padding:24px}.opt:hover{border-color:var(--blue)}.tiles{grid-template-columns:repeat(4,1fr)}.tile.asas{grid-column:span 2}.hero{padding:26px 28px}.hero h2{font-size:1.9rem}.hs{max-width:460px}.mp{right:max(16px,calc((100vw - 960px)/2 + 24px))}}
+@media(max-width:380px){header{gap:6px;padding:0 10px}header h1{font-size:1.05rem}#net{font-size:.68rem;padding:3px 8px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header><img src="icon-192.png" alt=""><h1>ExamForge</h1><button id="inst" class="pri" style="display:none">Install</button><button id="lbtn" class="hbtn lbtn"></button><button id="mbtn" class="hbtn" data-m="toggle" aria-expanded="false" aria-controls="mp"></button><span id="net">Online</span></header>
+<section id="mp" class="mp" hidden>
+<div class="mp-h"><b id="t-mt"></b><button data-m="close" id="m-x"></button></div>
+<div id="mp-name" class="mp-name empty"></div>
+<div class="mp-ctl"><button id="m-prev" class="sq" data-m="prev" disabled></button><button id="m-play" class="pri" data-m="play" disabled></button><button id="m-pause" data-m="pause" disabled></button><button id="m-stop" data-m="stop" disabled></button><button id="m-next" class="sq" data-m="next" disabled></button></div>
+<div class="mp-vol"><span id="m-vic"></span><input id="m-vol" type="range" min="0" max="100" step="1"><span id="m-volv"></span></div>
+<label class="mp-lp"><input type="checkbox" id="m-loop"><span id="t-lp"></span></label>
+<div id="m-list" class="m-list"></div>
+<div class="row"><label class="btn" for="mfile" id="m-add"></label><input id="mfile" type="file" multiple accept=".mp3,.wav,.ogg,audio/mpeg,audio/wav,audio/x-wav,audio/ogg" hidden></div>
+<p id="mp-st" class="mut mp-st" aria-live="polite"></p>
+</section>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),app=$('#app'),L=['A','B','C','D','E'];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s).toLowerCase().replace(/[^\p{L}\p{N}\s]/gu,' ').replace(/\s+/g,' ').trim();
+const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){alert(t('saveFail'))}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
+/* ---- Languages (EN / ID) ---- */
+const T={en:{inst:'Install',on:'Online',off:'Offline mode',hello:'Hello, student! 👋',ready:'Ready for your exam?',tag:'Import your questions and practise anytime – even offline.',qs:'questions',taken:'exams taken',avg:'avg. score',openbank:'Open question bank',nready:n=>n+' questions ready',hist:'History',nex:n=>n+(n>1?' exams taken':' exam taken'),noex:'No exams yet',music:'Music',musicsub:'Play your own study music',
+bank:'Question bank',mybanks:'My saved question banks',nobank:'No question bank imported yet. Import a .json file to begin.',file:'file',tl:'time limit',tp:'total points',none:'None',min:'min',usetm:'Use the timer',imp:'Import Question Bank',sample:'Load sample',start:'Start Examination',use:'Use',active:'Active',delb:'Remove this bank',delbc:'Remove this question bank from your saved list? History is kept.',history:'Examination history',noh:'No completed examinations yet.',retake:'Retake',retakeq:'Retake this examination now?',nobf:'Question bank not found',nobfd:'Import this question bank again to retake it.',
+saved:n=>'Saved "'+n+'" to your library',updated:n=>'Updated "'+n+'" in your library',cantread:n=>'Could not read "'+n+'"',notjson:m=>'This is not valid JSON: '+m,problem:n=>'"'+n+'" has a problem',nosample:'Sample not available',nosampled:'Open the app once while online, or import a .json file instead.',cantopen:'Could not open the file',saveFail:'Could not save: browser storage is full or blocked.',
+v_obj:'The file must contain a JSON object at the top level.',v_title:'Missing "title" (text).',v_subject:'Missing "subject" (text).',v_dur:'"duration" must be a number of minutes.',v_qs:'"questions" must be a non-empty list.',q_pre:i=>'Question '+i+': ',q_notobj:'is not an object.',q_text:'missing "question" text.',q_pts:'"points" must be a number above 0.',q_opts:'missing "options".',q_opt:k=>'option '+k+' is missing.',q_ans:'"answer" must be A, B, C, D or E.',q_kw:'"keywords" must be a list.',q_rb:'"rubric" must be a list.',q_need:'needs "expected_answer" or "keywords".',q_type:'"type" must be "multiple_choice" or "essay".',more:n=>'…and '+n+' more problems.',
+qn:(i,n)=>'Question '+i+' / '+n,pts:p=>'('+p+' pts)',ph:'Write your answer here…',answered:(a,n)=>a+' of '+n+' answered',prev:'◀ Prev',submit:'Submit',next:'Next ▶',qa:(i,a)=>'Question '+i+(a?' answered':''),notimer:'No timer',timeup:'Time is up. Your answers will now be submitted.',sub1:u=>u?'You have '+u+' unanswered question(s). Submit the examination now?':'Submit the examination now?',
+result:'Result',correct:'correct',incorrect:'incorrect (multiple choice)',essays:'essays (estimated)',essnote:'Essay scores are <b>estimates</b> from local keyword matching, not a judgment of understanding. Adjust them below if needed — the total updates automatically.',back:'Back to dashboard',again:'Retake exam',yours:'Your answer:',na:'not answered',corr:'Correct answer:',expl:'Explanation:',exp:'Expected answer:',kwf:'Keywords found:',rub:'Rubric:',sc:'Score (estimated, editable):',
+mtitle:'Background music',nomusic:'Playlist is empty',addm:'Add music',addmore:'Add more music',rm:'Remove',play:'Play',pause:'Pause',stop:'Stop',repeat:'Repeat playlist',hint:'Add MP3, WAV or OGG files. They play on this device only – nothing is uploaded.',playing:'Playing',paused:'Paused',mready:'Ready – press Play.',badfile:n=>'“'+n+'” is not supported. Please choose an MP3, WAV or OGG file.',cantplay:n=>'This browser cannot play “'+n+'”. Try an MP3 file.',vol:'Volume',lang:'Change language',mus:'Music player',close:'Close'},
+id:{inst:'Pasang',on:'Online',off:'Mode offline',hello:'Halo, pelajar! 👋',ready:'Siap ujian hari ini?',tag:'Impor soalmu dan berlatih kapan saja – bahkan tanpa internet.',qs:'soal',taken:'ujian selesai',avg:'rata-rata nilai',openbank:'Buka bank soal',nready:n=>n+' soal siap',hist:'Riwayat',nex:n=>n+' ujian selesai',noex:'Belum ada ujian',music:'Musik',musicsub:'Putar musik belajarmu sendiri',
+bank:'Bank soal',mybanks:'Bank soal tersimpan',nobank:'Belum ada bank soal. Impor file .json untuk memulai.',file:'file',tl:'batas waktu',tp:'total poin',none:'Tanpa batas',min:'menit',usetm:'Gunakan timer',imp:'Impor Bank Soal',sample:'Muat contoh',start:'Mulai Ujian',use:'Pakai',active:'Aktif',delb:'Hapus bank soal ini',delbc:'Hapus bank soal ini dari daftar tersimpan? Riwayat tetap disimpan.',history:'Riwayat ujian',noh:'Belum ada ujian yang selesai.',retake:'Ulangi',retakeq:'Ulangi ujian ini sekarang?',nobf:'Bank soal tidak ditemukan',nobfd:'Impor ulang bank soal ini untuk mengulang ujiannya.',
+saved:n=>'"'+n+'" disimpan ke daftarmu',updated:n=>'"'+n+'" diperbarui di daftarmu',cantread:n=>'Tidak dapat membaca "'+n+'"',notjson:m=>'Ini bukan JSON yang valid: '+m,problem:n=>'"'+n+'" bermasalah',nosample:'Contoh tidak tersedia',nosampled:'Buka aplikasi sekali saat online, atau impor file .json.',cantopen:'Tidak dapat membuka file',saveFail:'Gagal menyimpan: penyimpanan browser penuh atau diblokir.',
+v_obj:'File harus berisi objek JSON di tingkat paling atas.',v_title:'"title" (teks) belum ada.',v_subject:'"subject" (teks) belum ada.',v_dur:'"duration" harus berupa angka menit.',v_qs:'"questions" harus berupa daftar yang tidak kosong.',q_pre:i=>'Soal '+i+': ',q_notobj:'bukan objek.',q_text:'teks "question" belum ada.',q_pts:'"points" harus berupa angka lebih dari 0.',q_opts:'"options" belum ada.',q_opt:k=>'opsi '+k+' belum ada.',q_ans:'"answer" harus A, B, C, D, atau E.',q_kw:'"keywords" harus berupa daftar.',q_rb:'"rubric" harus berupa daftar.',q_need:'perlu "expected_answer" atau "keywords".',q_type:'"type" harus "multiple_choice" atau "essay".',more:n=>'…dan '+n+' masalah lainnya.',
+qn:(i,n)=>'Soal '+i+' / '+n,pts:p=>'('+p+' poin)',ph:'Tulis jawabanmu di sini…',answered:(a,n)=>a+' dari '+n+' terjawab',prev:'◀ Sebelumnya',submit:'Kirim',next:'Berikutnya ▶',qa:(i,a)=>'Soal '+i+(a?' terjawab':''),notimer:'Tanpa timer',timeup:'Waktu habis. Jawabanmu akan dikirim sekarang.',sub1:u=>u?'Ada '+u+' soal belum dijawab. Kirim ujian sekarang?':'Kirim ujian sekarang?',
+result:'Hasil',correct:'benar',incorrect:'salah (pilihan ganda)',essays:'esai (perkiraan)',essnote:'Nilai esai hanyalah <b>perkiraan</b> dari pencocokan kata kunci lokal, bukan penilaian pemahaman. Ubah di bawah jika perlu — total nilai diperbarui otomatis.',back:'Kembali ke dasbor',again:'Ulangi ujian',yours:'Jawabanmu:',na:'belum dijawab',corr:'Jawaban benar:',expl:'Penjelasan:',exp:'Jawaban yang diharapkan:',kwf:'Kata kunci ditemukan:',rub:'Rubrik:',sc:'Nilai (perkiraan, bisa diubah):',
+mtitle:'Musik latar',nomusic:'Playlist kosong',addm:'Tambah musik',addmore:'Tambah musik lagi',rm:'Hapus',play:'Putar',pause:'Jeda',stop:'Henti',repeat:'Ulangi playlist',hint:'Tambahkan file MP3, WAV, atau OGG. Hanya diputar di perangkat ini – tidak ada yang diunggah.',playing:'Sedang diputar',paused:'Dijeda',mready:'Siap – tekan Putar.',badfile:n=>'“'+n+'” tidak didukung. Pilih file MP3, WAV, atau OGG.',cantplay:n=>'Browser ini tidak dapat memutar “'+n+'”. Coba file MP3.',vol:'Volume',lang:'Ganti bahasa',mus:'Pemutar musik',close:'Tutup'}};
+let lang=ls.get('ef_lang',/^id/i.test(navigator.language||'')?'id':'en'),view='home';
+const t=(k,...a)=>{const v=(T[lang]&&T[lang][k])??T.en[k]??k;return typeof v==='function'?v(...a):v};
+
+/* ---- Saved question banks (library) ---- */
+let lib=ls.get('ef_lib',null);if(!Array.isArray(lib))lib=null;
+if(!lib){lib=[];const ob=ls.get('ef_bank',null);if(ob&&Array.isArray(ob.questions)){lib.push({id:Date.now(),name:ls.get('ef_file',''),bank:ob});ls.set('ef_lib',lib)}}
+lib=lib.filter(x=>x&&x.bank&&Array.isArray(x.bank.questions)&&x.bank.questions.length);
+let aid=ls.get('ef_active',null),bank=null,fname='',hist=ls.get('ef_hist',[]),ex=null,res=null,msg=null,tick=null;
+if(!Array.isArray(hist))hist=[];hist=hist.filter(x=>x&&typeof x==='object');
+function setActive(id){const e=lib.find(x=>x.id===id)||null;aid=e?e.id:null;bank=e?e.bank:null;fname=e?e.name:'';ls.set('ef_active',aid)}
+setActive(lib.some(x=>x.id===aid)?aid:(lib[0]?lib[0].id:null));
+
+/* ---- Icons ---- */
+const P={book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+cap:'<path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
+clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',music:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+play:'<polygon points="6 3 20 12 6 21 6 3" fill="currentColor"/>',pause:'<rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/>',stop:'<rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor"/>',
+prev:'<polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="19" x2="5" y2="5"/>',next:'<polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/>',
+upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
+vol:'<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>',x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',go:'<polyline points="9 18 15 12 9 6"/>',
+globe:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',redo:'<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>'};
+const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
+
+/* ---- Music playlist (files stay on this device; nothing is uploaded) ---- */
+const mus={a:new Audio(),tr:[],cur:-1,err:''};let mid=0;
+const M_EXT=/\.(mp3|wav|ogg)$/i,M_MIME=/^audio\/(mpeg|mp3|wav|x-wav|wave|ogg|vorbis)$/i,mcur=()=>mus.tr[mus.cur]||null;
+mus.a.preload='auto';mus.a.autoplay=false;mus.a.loop=false;
+function mUI(){const a=mus.a,x=mcur(),pl=!!x&&!a.paused&&!a.ended,n=mus.tr.length;
+ const nm=$('#mp-name');nm.textContent=x?x.name:t('nomusic');nm.classList.toggle('empty',!x);
+ $('#m-play').disabled=!x||pl;$('#m-pause').disabled=!pl;$('#m-stop').disabled=!x||(!pl&&a.currentTime===0);$('#m-prev').disabled=$('#m-next').disabled=n<2;
+ $('#m-add').innerHTML=ic('upload')+t(n?'addmore':'addm');
+ $('#m-list').innerHTML=mus.tr.map((y,i)=>`<div class="trk ${i===mus.cur?'on':''}"><button class="tn" data-m="pick" data-i="${i}">${i===mus.cur&&pl?ic('music',16):'<span class="no">'+(i+1)+'</span>'}<span>${esc(y.name)}</span></button><button class="tx" data-m="rm" data-i="${i}" aria-label="${esc(t('rm'))}">${ic('x',16)}</button></div>`).join('');
+ const st=$('#mp-st');st.classList.toggle('err',!!mus.err);st.textContent=mus.err||(!x?t('hint'):pl?t('playing'):a.currentTime>0&&!a.ended?t('paused'):t('mready'));
+ $('#mbtn').classList.toggle('on',pl);const s=$('#mt-sub');if(s)s.textContent=x?x.name+(n>1?'  +'+(n-1):''):t('musicsub')}
+function mLoad(i){const x=mus.tr[i];if(!x)return;mus.cur=i;mus.a.src=x.url;mus.a.load()}
+function mPlay(){if(!mcur())return;mus.err='';const p=mus.a.play();if(p&&p.catch)p.catch(e=>{if(e&&e.name==='AbortError')return;mus.err=t('cantplay',mcur()?mcur().name:'');mUI()});mUI()}
+function mStop(){mus.a.pause();try{mus.a.currentTime=0}catch(e){}mUI()}
+function mStep(d,play){const n=mus.tr.length;if(!n)return;mLoad((mus.cur+d+n)%n);if(play)mPlay();else mUI()}
+function mAdd(files){mus.err='';for(const f of files){if(!M_EXT.test(f.name)&&!M_MIME.test(f.type)){mus.err=t('badfile',f.name);continue}mus.tr.push({id:++mid,name:f.name,url:URL.createObjectURL(f)})}if(mus.cur<0&&mus.tr.length)mLoad(0);mUI()}
+function mRm(i){const x=mus.tr[i];if(!x)return;const was=i===mus.cur;if(was)mus.a.pause();URL.revokeObjectURL(x.url);mus.tr.splice(i,1);
+ if(!mus.tr.length){mus.cur=-1;mus.a.removeAttribute('src');mus.a.load()}else if(was)mLoad(Math.min(i,mus.tr.length-1));else if(i<mus.cur)mus.cur--;mUI()}
+function mOpen(o){$('#mp').hidden=!o;$('#mbtn').setAttribute('aria-expanded',String(o))}
+['play','pause'].forEach(v=>mus.a.addEventListener(v,mUI));
+mus.a.addEventListener('ended',()=>{if(mus.cur<mus.tr.length-1||$('#m-loop').checked)mStep(1,true);else mUI()});
+mus.a.addEventListener('error',()=>{const x=mcur();if(!x)return;mRm(mus.cur);mus.err=t('cantplay',x.name);mUI()});
+{const v=Math.min(100,Math.max(0,+ls.get('ef_vol',70)||0)),vs=$('#m-vol');vs.value=v;mus.a.volume=v/100;$('#m-volv').textContent=v+'%';
+ vs.addEventListener('input',()=>{mus.a.volume=vs.value/100;$('#m-volv').textContent=vs.value+'%'});vs.addEventListener('change',()=>ls.set('ef_vol',+vs.value));
+ const lp=$('#m-loop');lp.checked=ls.get('ef_loop',true)!==false;lp.addEventListener('change',()=>ls.set('ef_loop',lp.checked))}
+$('#mfile').addEventListener('change',e=>{const f=[...e.target.files];e.target.value='';if(f.length)mAdd(f)});
+document.addEventListener('click',e=>{
+ const m=e.target.closest('[data-m]');
+ if(m){const i=+m.dataset.i;switch(m.dataset.m){case'toggle':mOpen($('#mp').hidden);break;case'close':mOpen(false);break;case'play':mPlay();break;case'pause':mus.a.pause();break;case'stop':mStop();break;case'prev':mStep(-1,!mus.a.paused);break;case'next':mStep(1,!mus.a.paused);break;case'pick':if(i===mus.cur&&!mus.a.paused)mus.a.pause();else{if(i!==mus.cur)mLoad(i);mPlay()}break;case'rm':mRm(i);break}return}
+ const j=e.target.closest('[data-jump]');
+ if(j){const el=document.getElementById(j.dataset.jump);if(el){el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}return}
+ if(!$('#mp').hidden&&!e.target.closest('#mp'))mOpen(false)});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#mp').hidden){mOpen(false);$('#mbtn').focus()}});
+
+/* ---- Question-bank import (same rules as before; messages are translated) ---- */
+function validate(d){const e=[];
+if(!d||typeof d!=='object'||Array.isArray(d))return{e:[t('v_obj')]};
+if(typeof d.title!=='string'||!d.title.trim())e.push(t('v_title'));
+if(typeof d.subject!=='string'||!d.subject.trim())e.push(t('v_subject'));
+if(d.duration!=null&&!(typeof d.duration==='number'&&d.duration>=0))e.push(t('v_dur'));
+if(!Array.isArray(d.questions)||!d.questions.length)return{e:[...e,t('v_qs')]};
+const qs=d.questions.map((q,i)=>{const n=t('q_pre',i+1);
+ if(!q||typeof q!=='object'){e.push(n+t('q_notobj'));return null}
+ if(typeof q.question!=='string'||!q.question.trim())e.push(n+t('q_text'));
+ const p=q.points==null?1:q.points;if(typeof p!=='number'||!(p>0))e.push(n+t('q_pts'));
+ const ans=typeof q.answer==='string'?q.answer.trim().toUpperCase():q.answer;
+ if(q.type==='multiple_choice'){
+  if(!q.options||typeof q.options!=='object')e.push(n+t('q_opts'));
+  else for(const k of L)if(typeof q.options[k]!=='string'||!q.options[k].trim())e.push(n+t('q_opt',k));
+  if(!L.includes(ans))e.push(n+t('q_ans'));
+ }else if(q.type==='essay'){
+  if(q.keywords!=null&&!Array.isArray(q.keywords))e.push(n+t('q_kw'));
+  if(q.rubric!=null&&!Array.isArray(q.rubric))e.push(n+t('q_rb'));
+  if(!q.expected_answer&&!(Array.isArray(q.keywords)&&q.keywords.length))e.push(n+t('q_need'));
+ }else e.push(n+t('q_type'));
+ return{...q,answer:ans,points:p,keywords:Array.isArray(q.keywords)?q.keywords.map(String):[],rubric:Array.isArray(q.rubric)?q.rubric:[]}});
+if(e.length)return{e:e.slice(0,8).concat(e.length>8?[t('more',e.length-8)]:[])};
+return{bank:{title:d.title.trim(),subject:d.subject.trim(),duration:d.duration||0,questions:qs}}}
+
+function load(text,name){let d;
+ try{d=JSON.parse(text)}catch(x){msg={t:'err',h:t('cantread',name),l:[t('notjson',x.message)]};return home()}
+ const v=validate(d);if(v.e){msg={t:'err',h:t('problem',name),l:v.e};return home()}
+ const k=s=>(s.title+'|'+s.subject).toLowerCase(),old=lib.find(x=>k(x.bank)===k(v.bank));let id;
+ if(old){old.bank=v.bank;old.name=name;id=old.id}else{id=Date.now();lib.push({id,name,bank:v.bank})}
+ ls.set('ef_lib',lib);setActive(id);msg={t:'ok',h:t(old?'updated':'saved',name),l:[]};home()}
+
+function home(){view='home';clearInterval(tick);ex=null;res=null;window.onbeforeunload=null;scrollTo(0,0);
+ const m=msg,avg=hist.length?Math.round(hist.reduce((s,h)=>s+(+h.score||0),0)/hist.length*10)/10:'–';msg=null;
+ app.innerHTML=(m?`<div class="msg ${m.t}"><b>${esc(m.h)}</b>${m.l.length?'<ul>'+m.l.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>':''}</div>`:'')+
+ `<section class="hero"><span class="hi">${t('hello')}</span><h2>${t('ready')}</h2><p>${t('tag')}</p>
+ <div class="hs"><div><b>${bank?bank.questions.length:0}</b>${t('qs')}</div><div><b>${hist.length}</b>${t('taken')}</div><div><b>${avg}</b>${t('avg')}</div></div></section>
+ <div class="tiles">
+ <button class="tile asas" data-jump="bank-card" aria-label="ASAS"><span class="ti">${ic('cap',28)}</span><b>ASAS</b><small>Asesmen Sumatif Akhir Semester</small><span class="go">${bank?t('nready',bank.questions.length):t('openbank')} ${ic('go',14)}</span></button>
+ <button class="tile hist" data-jump="hist-card"><span class="ti">${ic('clock',24)}</span><b>${t('hist')}</b><small>${hist.length?t('nex',hist.length):t('noex')}</small></button>
+ <button class="tile mus" data-m="toggle"><span class="ti">${ic('music',24)}</span><b>${t('music')}</b><small id="mt-sub"></small></button>
+ </div>
+ <div class="card" id="bank-card"><h2 class="ch"><span class="ci">${ic('book',20)}</span>${t('bank')} <span class="tag">ASAS</span></h2>${bank?`<div style="font-weight:700;font-size:1.2rem">${esc(bank.title)}</div><div class="mut">${esc(bank.subject)} · ${t('file')}: ${esc(fname)}</div>
+ <div class="stats"><div class="stat"><b>${bank.questions.length}</b>${t('qs')}</div><div class="stat"><b>${bank.duration?bank.duration+' '+t('min'):t('none')}</b>${t('tl')}</div><div class="stat"><b>${bank.questions.reduce((s,q)=>s+q.points,0)}</b>${t('tp')}</div></div>
+ ${bank.duration?`<label><input type="checkbox" id="usetm" checked> ${t('usetm')}</label>`:''}`:`<p class="mut">${t('nobank')}</p>`}
+ <div class="row"><label class="btn ${bank?'':'pri'}" for="file">${ic('upload',18)}${t('imp')}</label><input id="file" type="file" accept=".json,application/json" hidden>
+ <button data-do="sample">${t('sample')}</button>${bank?`<button class="pri" data-do="start">${t('start')}</button>`:''}</div>
+ ${lib.length?`<h3 class="sub">${t('mybanks')} (${lib.length})</h3>`+lib.map(x=>`<div class="hr"><div><b>${esc(x.bank.title)}</b><div class="mut">${esc(x.bank.subject)} · ${x.bank.questions.length} ${t('qs')}</div></div>${x.id===aid?`<span class="sc">${t('active')}</span>`:`<button data-do="use" data-id="${x.id}">${t('use')}</button>`}<button class="dng" data-do="delb" data-id="${x.id}" aria-label="${esc(t('delb'))}">✕</button></div>`).join(''):''}</div>
+ <div class="card" id="hist-card"><h2 class="ch"><span class="ci g">${ic('clock',20)}</span>${t('history')}</h2>${hist.length?hist.map(h=>`<div class="hr"><div><b>${esc(h.subject)}</b><div class="mut">${esc(h.title)} · ${new Date(h.date).toLocaleString(lang==='id'?'id-ID':undefined)} · ${h.n} ${t('qs')}</div></div><span class="sc">${h.score}</span><button class="rt" data-do="retake" data-id="${h.id}">${ic('redo',16)}${t('retake')}</button><button class="dng" data-do="delh" data-id="${h.id}" aria-label="Delete">✕</button></div>`).join(''):`<p class="mut">${t('noh')}</p>`}</div><p class="mut" style="text-align:center;margin:4px 0 0">ExamForge v2.1</p>`;
+ try{mUI()}catch(e){}}
+
+function startExam(){const u=$('#usetm');
+ ex={a:{},cur:0,end:bank.duration&&(!u||u.checked)?Date.now()+bank.duration*6e4:0};
+ window.onbeforeunload=e=>{e.preventDefault();e.returnValue=''};
+ clearInterval(tick);tick=setInterval(tm,1000);draw()}
+function tm(){const e=$('#tm');if(!e||!ex)return;if(!ex.end){e.textContent=t('notimer');return}
+ const l=Math.max(0,Math.round((ex.end-Date.now())/1000));
+ e.textContent='⏱ '+String(Math.floor(l/60)).padStart(2,'0')+':'+String(l%60).padStart(2,'0');e.classList.toggle('low',l<60);
+ if(l<=0){alert(t('timeup'));submit(true)}}
+const nums=()=>bank.questions.map((q,i)=>`<button class="${i===ex.cur?'cur':ex.a[i]!=null?'done':''}" data-go="${i}" aria-label="${t('qa',i+1,ex.a[i]!=null)}">${i+1}</button>`).join('');
+const cnt=()=>Object.keys(ex.a).length;
+function draw(){view='exam';const q=bank.questions[ex.cur],n=bank.questions.length;scrollTo(0,0);
+ app.innerHTML=`<div class="bar"><b>${t('qn',ex.cur+1,n)}</b><span id="tm" class="tm"></span></div>
+ <div class="card"><div class="qt">${esc(q.question)} <span class="pts">${t('pts',q.points)}</span></div>
+ ${q.type==='multiple_choice'?L.map(k=>`<button class="opt ${ex.a[ex.cur]===k?'sel':''}" data-pick="${k}"><b>${k}</b><span>${esc(q.options[k])}</span></button>`).join(''):`<textarea id="es" placeholder="${esc(t('ph'))}">${esc(ex.a[ex.cur]||'')}</textarea>`}</div>
+ <div class="card"><div class="grid" id="gr">${nums()}</div><p class="mut" id="ct" style="margin:8px 0 0">${t('answered',cnt(),n)}</p></div>
+ <div class="nav"><button data-do="prev" ${ex.cur?'':'disabled'}>${t('prev')}</button><button class="dng" data-do="submit">${t('submit')}</button><button class="pri" data-do="next" ${ex.cur<n-1?'':'disabled'}>${t('next')}</button></div>`;tm()}
+function submit(force){const n=bank.questions.length,un=n-cnt();
+ if(!force&&!confirm(t('sub1',un)))return;
+ clearInterval(tick);window.onbeforeunload=null;
+ const items=bank.questions.map((q,i)=>{const a=ex.a[i];
+  if(q.type==='multiple_choice'){const ok=a===q.answer;return{q,a,ok,sc:ok?q.points:0,max:q.points}}
+  const tt=norm(a||''),ks=q.keywords,hit=[];let f=0;
+  if(ks.length){ks.forEach(k=>{const kk=norm(k);if(!kk)return;if(tt.includes(kk)){hit.push(k);f++}else{const w=kk.split(' ').filter(x=>x.length>3);if(w.length>1){const r=w.filter(x=>tt.includes(x)).length/w.length;if(r>=.6)f+=r*.5}}});f/=ks.length}
+  else{const w=[...new Set(norm(q.expected_answer).split(' ').filter(x=>x.length>3))];f=w.length?w.filter(x=>tt.includes(x)).length/w.length:0}
+  return{q,a,sc:Math.round(q.points*Math.min(1,f)*10)/10,max:q.points,hit}});
+ res={items,rec:{id:Date.now(),bid:aid,subject:bank.subject,title:bank.title,date:new Date().toISOString(),n,score:0}};
+ hist.unshift(res.rec);saveRes();result()}
+function tot(){const e=res.items.reduce((s,x)=>s+x.sc,0),m=res.items.reduce((s,x)=>s+x.max,0);return m?Math.round(e/m*1000)/10:0}
+function saveRes(){res.rec.score=tot();ls.set('ef_hist',hist)}
+function result(){view='result';scrollTo(0,0);const mc=res.items.filter(x=>x.q.type==='multiple_choice'),ok=mc.filter(x=>x.ok).length,es=res.items.filter(x=>x.q.type==='essay');
+ app.innerHTML=`<div class="card"><h2>${t('result')} · ${esc(bank.title)}</h2><div class="big"><span id="fs">${tot()}</span><span class="mut" style="font-size:1rem"> / 100</span></div>
+ <div class="stats"><div class="stat"><b style="color:var(--ok)">${ok}</b>${t('correct')}</div><div class="stat"><b style="color:var(--bad)">${mc.length-ok}</b>${t('incorrect')}</div><div class="stat"><b>${es.length}</b>${t('essays')}</div></div>
+ <p class="mut">${t('essnote')}</p>
+ <div class="row"><button class="pri" data-do="home">${t('back')}</button><button data-do="again">${ic('redo',16)}${t('again')}</button></div></div>`+
+ res.items.map((x,i)=>{const q=x.q,mcq=q.type==='multiple_choice';
+ return `<div class="card rv ${mcq?(x.ok?'ok':'no'):'es'}"><div class="qt">${i+1}. ${esc(q.question)}</div>`+
+ (mcq?`<div class="ans">${t('yours')} ${x.a?esc(x.a+'. '+q.options[x.a]):'<i>'+t('na')+'</i>'}</div><div class="ans">${t('corr')} <b>${q.answer}. ${esc(q.options[q.answer])}</b></div>${q.explanation?`<p><b>${t('expl')}</b> ${esc(q.explanation)}</p>`:''}<div class="mut">${x.sc} / ${x.max} ${lang==='id'?'poin':'pts'}</div>`
+ :`<div class="ans">${t('yours')}\n${x.a?esc(x.a):'<i>'+t('na')+'</i>'}</div>${q.expected_answer?`<div class="ans">${t('exp')}\n${esc(q.expected_answer)}</div>`:''}
+ ${q.keywords.length?`<p class="mut">${t('kwf')} ${x.hit.length?esc(x.hit.join(', ')):'–'} (${x.hit.length}/${q.keywords.length})</p>`:''}
+ ${q.rubric.length?'<p class="mut">'+t('rub')+' '+q.rubric.map(r=>esc(r.criterion)+' ('+esc(r.points)+')').join(' · ')+'</p>':''}
+ <label>${t('sc')} <input type="number" min="0" max="${x.max}" step="0.5" value="${x.sc}" data-adj="${i}"> / ${x.max}</label>`)+`</div>`}).join('')}
+
+document.addEventListener('click',e=>{const el=e.target.closest('[data-do],[data-go],[data-pick]');if(!el)return;const d=el.dataset;
+ if(d.pick){ex.a[ex.cur]=d.pick;return draw()}
+ if(d.go!==undefined){ex.cur=+d.go;return draw()}
+ switch(d.do){
+ case'start':return startExam();
+ case'prev':ex.cur--;return draw();
+ case'next':ex.cur++;return draw();
+ case'submit':return submit();
+ case'home':return home();
+ case'again':return startExam();
+ case'use':setActive(+d.id);return home();
+ case'delb':if(confirm(t('delbc'))){lib=lib.filter(x=>String(x.id)!==d.id);ls.set('ef_lib',lib);if(String(aid)===d.id)setActive(lib[0]?lib[0].id:null);home()}return;
+ case'retake':{const h=hist.find(x=>String(x.id)===d.id),b=h&&(lib.find(x=>x.id===h.bid)||lib.find(x=>x.bank.title===h.title&&x.bank.subject===h.subject));
+  if(!b){msg={t:'err',h:t('nobf'),l:[t('nobfd')]};return home()}
+  if(!confirm(t('retakeq')))return;setActive(b.id);const u=$('#usetm');if(u)u.checked=true;return startExam()}
+ case'delh':if(confirm(lang==='id'?'Hapus catatan riwayat ini?':'Delete this history record?')){hist=hist.filter(h=>h.id!=d.id);ls.set('ef_hist',hist);home()}return;
+ case'sample':fetch('questions.json').then(r=>{if(!r.ok)throw 0;return r.text()}).then(x=>load(x,'questions.json')).catch(()=>{msg={t:'err',h:t('nosample'),l:[t('nosampled')]};home()});return}});
+document.addEventListener('input',e=>{if(e.target.id==='es'&&ex){const v=e.target.value;if(v.trim())ex.a[ex.cur]=v;else delete ex.a[ex.cur];$('#gr').innerHTML=nums();$('#ct').textContent=t('answered',cnt(),bank.questions.length)}});
+document.addEventListener('change',e=>{const el=e.target;
+ if(el.id==='file'){const f=el.files[0];el.value='';if(f){const r=new FileReader();r.onload=()=>load(r.result,f.name);r.onerror=()=>{msg={t:'err',h:t('cantopen'),l:[]};home()};r.readAsText(f)}}
+ if(el.dataset.adj!==undefined&&res){const x=res.items[+el.dataset.adj];let v=parseFloat(el.value);if(isNaN(v))v=0;v=Math.min(x.max,Math.max(0,v));x.sc=v;el.value=v;saveRes();$('#fs').textContent=tot()}});
+
+/* ---- Language, status, install ---- */
+const net=()=>{const n=$('#net');n.textContent=navigator.onLine?t('on'):t('off');n.className=navigator.onLine?'':'off'};
+function applyLang(){document.documentElement.lang=lang;$('#inst').textContent=t('inst');net();
+ $('#lbtn').innerHTML=ic('globe',18)+'<span>'+lang.toUpperCase()+'</span>';$('#lbtn').setAttribute('aria-label',t('lang'));$('#mbtn').setAttribute('aria-label',t('mus'));
+ $('#t-mt').textContent=t('mtitle');$('#t-lp').textContent=t('repeat');$('#m-x').setAttribute('aria-label',t('close'));$('#m-vol').setAttribute('aria-label',t('vol'));
+ $('#m-play').innerHTML=ic('play',18)+t('play');$('#m-pause').innerHTML=ic('pause',18)+t('pause');$('#m-stop').innerHTML=ic('stop',18)+t('stop');mUI()}
+$('#lbtn').onclick=()=>{lang=lang==='en'?'id':'en';ls.set('ef_lang',lang);applyLang();view==='exam'&&ex?draw():view==='result'&&res?result():home()};
+$('#mbtn').innerHTML=ic('music',20);$('#m-x').innerHTML=ic('x',18);$('#m-vic').innerHTML=ic('vol',20);$('#m-prev').innerHTML=ic('prev',18);$('#m-next').innerHTML=ic('next',18);
+addEventListener('online',net);addEventListener('offline',net);
+let dp;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;$('#inst').style.display='block'});
+$('#inst').onclick=()=>{if(dp){dp.prompt();dp=null;$('#inst').style.display='none'}};
+if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+function fatal(e){const m=String(e&&(e.stack||e.message)||e).slice(0,400);
+ app.innerHTML=`<div class="card"><h2>Something went wrong · Terjadi kesalahan</h2><p class="mut">Please send a screenshot of this message. / Mohon kirim tangkapan layar pesan ini.</p><pre style="white-space:pre-wrap;font-size:.8rem;background:#f0f4ff;border-radius:12px;padding:10px">${esc(m)}</pre>
+ <div class="row"><button class="pri" onclick="location.reload()">Reload / Muat ulang</button><button class="dng" id="rst">Reset saved data / Hapus data tersimpan</button></div></div>`;
+ $('#rst').onclick=()=>{if(confirm('This deletes saved question banks and history. / Ini menghapus bank soal dan riwayat tersimpan.')){Object.keys(localStorage).filter(k=>k.indexOf('ef_')===0).forEach(k=>localStorage.removeItem(k));location.reload()}}}
+addEventListener('error',ev=>{if(!app.children.length)fatal(ev.error||ev.message)});
+try{home()}catch(e){fatal(e)}
+try{applyLang()}catch(e){console.error(e)}
+</script></body></html>
