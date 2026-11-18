@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1d3a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<title>ExamForge</title>
+<style>
+:root{--navy:#0b1d3a;--blue:#3b6ff5;--violet:#7c5cf0;--bg:#f2f5ff;--tx:#0f1b33;--mut:#5f6b8a;--ok:#16a34a;--bad:#dc2626;--bd:#e1e7f5;--sh:0 4px 16px rgba(25,45,110,.08);--sh2:0 12px 30px rgba(25,45,110,.16);--hh:56px}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(180deg,#e6edff 0,var(--bg) 340px) var(--bg);min-height:100vh;color:var(--tx);overflow-x:hidden}
+.ic{flex:none;vertical-align:middle}
+header{background:linear-gradient(120deg,#0b1d3a,#1e3a8a 60%,#3d4fe0);color:#fff;padding:0 14px;height:var(--hh);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:30;box-shadow:0 2px 14px rgba(11,29,58,.35)}
+header img{width:34px;height:34px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.3)}header h1{font-size:1.2rem;margin:0;flex:1;min-width:0;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#net{font-size:.75rem;padding:4px 11px;border-radius:99px;background:#16a34a;white-space:nowrap;font-weight:600}#net.off{background:#d97706}
+#inst{min-height:36px;padding:4px 12px;font-size:.85rem;border-radius:99px}
+.hbtn{min-height:38px;width:40px;padding:0;background:rgba(255,255,255,.15);border:0;color:#fff;border-radius:12px;position:relative}
+.hbtn:hover{background:rgba(255,255,255,.26)}
+.hbtn.on::after{content:"";position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:#34d399;box-shadow:0 0 0 2px #1e3a8a;animation:pl 1.4s infinite}
+@keyframes pl{50%{transform:scale(1.35);opacity:.7}}
+main{max-width:960px;margin:0 auto;padding:14px 12px 24px}
+.card{background:rgba(255,255,255,var(--ua));border:1px solid var(--bd);border-radius:20px;padding:18px;margin-bottom:14px;overflow-wrap:anywhere;box-shadow:var(--sh);scroll-margin-top:calc(var(--hh) + 12px)}
+h2{margin:0 0 8px;font-size:1.1rem}.mut{color:var(--mut);font-size:.9rem}
+.ch{display:flex;align-items:center;gap:10px;font-size:1.15rem}
+.ci{width:36px;height:36px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,var(--blue),var(--violet));flex:none}
+.ci.g{background:linear-gradient(135deg,#10b981,#06b6d4)}
+.tag{font-size:.68rem;font-weight:700;letter-spacing:.6px;padding:2px 9px;border-radius:99px;background:#ffedd5;color:#c2410c}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn,button{font:inherit;min-height:46px;padding:8px 16px;border-radius:14px;border:1px solid var(--bd);background:rgba(255,255,255,var(--ua));color:var(--tx);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,box-shadow .15s,background .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
+.btn:hover,button:hover:not(:disabled){box-shadow:0 4px 12px rgba(25,45,110,.12);border-color:#c5d0ea}
+.btn:active,button:active:not(:disabled){transform:scale(.97)}
+:is(.btn,button,input,textarea):focus-visible{outline:3px solid rgba(59,111,245,.45);outline-offset:2px}
+.pri{background:linear-gradient(135deg,var(--blue),var(--violet));border-color:transparent;color:#fff;font-weight:600;box-shadow:0 4px 12px rgba(59,111,245,.35)}
+.pri:hover:not(:disabled){border-color:transparent;box-shadow:0 6px 16px rgba(59,111,245,.45)}
+.dng{color:var(--bad)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.msg{border-radius:16px;padding:12px 16px;margin-bottom:14px;box-shadow:var(--sh)}.msg.err{background:#fee2e2;color:#7f1d1d}.msg.ok{background:#dcfce7;color:#14532d}.msg ul{margin:6px 0 0;padding-left:20px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.stat{background:#f0f4ff;border-radius:14px;padding:10px 14px;flex:1 1 110px}.stat b{display:block;font-size:1.3rem;color:var(--blue)}
+.hr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 0;border-top:1px solid var(--bd)}.hr>div{flex:1 1 100%;min-width:0}.hr .sc{font-weight:700;color:var(--blue);font-size:1.05rem;background:#e8f0ff;border-radius:99px;padding:2px 12px}.hr>:nth-child(2){margin-right:auto}
+.hr button{min-height:38px;padding:4px 12px;font-size:.9rem}.hr .rt{color:var(--blue);border-color:#c9d8fb;background:#f3f7ff}.hr .rt .ic{margin-right:-2px}
+.sub{margin:18px 0 0;font-size:1rem;color:var(--mut)}
+.bar{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(120deg,#0b1d3a,#1e3a8a);color:#fff;border-radius:16px;padding:12px 18px;margin-bottom:14px;position:sticky;top:calc(var(--hh) + 6px);z-index:4;box-shadow:var(--sh2)}
+.tm{font-variant-numeric:tabular-nums;font-weight:700}.tm.low{color:#fca5a5}
+.qt{font-size:1.1rem;font-weight:600;margin-bottom:12px}.pts{font-size:.75rem;color:var(--mut);font-weight:400;white-space:nowrap}
+.opt{display:flex;width:100%;gap:12px;text-align:left;justify-content:flex-start;margin-bottom:10px;padding:12px 14px;border-radius:16px}.opt b{min-width:28px;height:28px;border-radius:50%;background:#eaf0ff;color:var(--blue);display:inline-flex;align-items:center;justify-content:center;flex:none}
+.opt.sel{border-color:var(--blue);background:#e8f0ff;box-shadow:0 0 0 2px rgba(59,111,245,.2)}.opt.sel b{background:var(--blue);color:#fff}
+textarea{width:100%;min-height:200px;font:inherit;padding:12px;border:1px solid var(--bd);border-radius:14px;resize:vertical}
+.grid{display:flex;flex-wrap:wrap;gap:6px}.grid button{min-height:42px;width:42px;padding:0;border-radius:12px}
+.grid .done{background:#dbeafe;border-color:var(--blue)}.grid .cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nav{display:flex;gap:8px;position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 75%,rgba(242,245,255,0));padding:14px 0 8px}.nav button{flex:1}
+.big{font-size:3rem;font-weight:800;color:var(--blue);line-height:1}
+.rv{border-left:5px solid var(--bd)}.rv.ok{border-color:var(--ok)}.rv.no{border-color:var(--bad)}.rv.es{border-color:var(--blue)}
+.ans{background:#f0f4ff;border-radius:12px;padding:8px 12px;margin:6px 0;white-space:pre-wrap}
+input[type=number]{font:inherit;width:90px;padding:8px;border:1px solid var(--bd);border-radius:12px}
+
+/* Dashboard */
+.hero{background:linear-gradient(135deg,#2f6bf0 0,#5b5df0 55%,#8b5cf6 100%);color:#fff;border-radius:24px;padding:20px;margin-bottom:14px;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-50px;top:-60px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.12)}
+.hero>*{position:relative;z-index:1}
+.hero .hi{font-size:.9rem;opacity:.9}
+.hero h2{font-size:1.55rem;line-height:1.2;margin:2px 0 4px}.hero p{margin:0 0 14px;opacity:.9;font-size:.95rem}
+.hs{display:flex;gap:8px}.hs>div{flex:1;background:rgba(255,255,255,.18);border-radius:16px;padding:8px 6px;text-align:center;font-size:.75rem;line-height:1.2}.hs b{display:block;font-size:1.35rem}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px}
+.tile{position:relative;overflow:hidden;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;text-align:left;border:0;color:#fff;padding:16px;min-height:132px;border-radius:22px;box-shadow:var(--sh2);width:100%}
+.tile:hover:not(:disabled){box-shadow:0 16px 34px rgba(25,45,110,.28);transform:translateY(-2px)}
+.tile::after{content:"";position:absolute;right:-30px;bottom:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.16)}
+.tile>*{position:relative;z-index:1}
+.ti{width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.25);display:inline-flex;align-items:center;justify-content:center}
+.tile b{font-size:1.1rem;line-height:1.15}.tile small{font-size:.8rem;opacity:.92;line-height:1.3;overflow-wrap:anywhere}
+.tile.asas{grid-column:1/-1;background:linear-gradient(135deg,#ff8a3d,#f43f8e);min-height:150px}
+.tile.asas b{font-size:1.7rem;letter-spacing:.5px}.tile.asas small{font-size:.9rem}
+.tile.asas .go{margin-top:auto;background:#fff;color:#e11d74;font-weight:700;font-size:.8rem;padding:5px 12px;border-radius:99px;display:inline-flex;align-items:center;gap:4px}
+.tile.hist{background:linear-gradient(135deg,#10b981,#06b6d4)}
+.tile.mus{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
+.flash{animation:fl 1.4s ease-out}
+@keyframes fl{0%{box-shadow:0 0 0 0 rgba(244,63,142,.7)}60%{box-shadow:0 0 0 12px rgba(244,63,142,0)}100%{box-shadow:var(--sh)}}
+
+/* Music player */
+.mp{position:fixed;z-index:40;top:calc(var(--hh) + 8px);right:12px;width:min(360px,calc(100vw - 24px));background:#fff;border:1px solid var(--bd);border-radius:22px;box-shadow:0 18px 44px rgba(11,29,58,.3);padding:16px}
+.mp[hidden]{display:none}
+.mp-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}.mp-h b{flex:1;font-size:1.05rem}
+.mp-h button{min-height:36px;width:36px;padding:0;border-radius:11px}
+.mp-name{display:flex;align-items:center;gap:10px;background:#f0f4ff;border-radius:14px;padding:10px 12px;font-weight:600;overflow-wrap:anywhere;word-break:break-word}
+.mp-name.empty{color:var(--mut);font-weight:400}
+.mp-ctl{display:flex;gap:8px;margin:12px 0}.mp-ctl button{flex:1;padding:8px 6px}
+.mp-vol{display:flex;align-items:center;gap:10px;color:var(--mut)}.mp-vol input{flex:1;accent-color:var(--blue);height:28px;min-width:0}.mp-vol span{min-width:42px;text-align:right;font-variant-numeric:tabular-nums}
+.mp-lp{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.9rem}.mp-lp input{width:20px;height:20px;accent-color:var(--blue)}
+.mp-st{margin:10px 0 0;font-size:.85rem}.mp-st.err{color:var(--bad)}
+
+.lbtn{width:auto;padding:0 10px;gap:5px;font-size:.8rem;font-weight:700}
+.mp{max-height:calc(100vh - var(--hh) - 20px);overflow:auto}
+.mp-ctl{gap:6px}.mp-ctl button{gap:5px;padding:8px 4px;font-size:.9rem}.mp-ctl .sq{flex:0 0 44px}
+.m-list{margin:8px 0 0;max-height:170px;overflow:auto}.m-list:empty{display:none}
+.trk{display:flex;align-items:center;gap:4px;border-radius:12px}.trk.on{background:#eaf0ff}
+.trk .tn{flex:1;min-width:0;justify-content:flex-start;text-align:left;border:0;background:transparent;min-height:40px;padding:4px 8px;gap:10px;box-shadow:none}.trk .tn span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trk .no{width:20px;text-align:center;color:var(--mut);font-size:.8rem}.trk .tx{min-height:36px;width:36px;padding:0;border:0;background:transparent;color:var(--bad);box-shadow:none}
+
+/* Profile + background + settings */
+#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;overflow:hidden;pointer-events:none}#bg[hidden],.st[hidden]{display:none}
+#bg img,#bg video,.pv img,.pv video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transform:scale(1.06)}
+#bg [hidden],.pv [hidden]{display:none}#bg .o,.pv .o{position:absolute;top:0;left:0;width:100%;height:100%}
+.bg-on .nav{background:none}
+.st{position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(11,29,58,.4);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(var(--hh) / 2) 10px 28px}
+.st-sheet{max-width:560px;margin:0 auto;background:#f4f7ff;border-radius:24px;padding:14px;box-shadow:var(--sh2)}.st-sheet .card{box-shadow:none}
+.st-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}.st-h b{flex:1;font-size:1.25rem}.st-h button{min-height:38px;width:38px;padding:0;border-radius:12px}
+.fld{display:block;margin-top:10px}.fld span{display:block;font-size:.85rem;color:var(--mut);margin-bottom:4px}.fld input{width:100%;font:inherit;padding:10px 12px;min-height:46px;border:1px solid var(--bd);border-radius:12px}.fld input.bad{border-color:var(--bad)}.perr{margin:6px 0 0;font-size:.85rem;min-height:1.2em}
+.seg{display:flex;gap:4px;background:#e6ecfb;border-radius:14px;padding:4px;margin-top:6px}.seg button{flex:1;border:0;background:transparent;min-height:42px;border-radius:11px;box-shadow:none;padding:4px}.seg button.on{background:#fff;color:var(--blue);font-weight:700;box-shadow:var(--sh)}
+.up{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}.fn{flex:1 1 100%;font-size:.8rem;overflow-wrap:anywhere}.sm{min-height:36px;padding:4px 12px;font-size:.85rem}
+.pv{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#e6edff,#f4f7ff);border:1px solid var(--bd);margin-top:8px;display:flex;align-items:center;justify-content:center}.pvt{position:relative;color:var(--mut);font-size:.9rem;padding:10px;text-align:center}
+.tg{display:flex;align-items:center;gap:10px;margin-top:14px;min-height:36px}.tg input{width:22px;height:22px;accent-color:var(--blue)}
+.sl{display:grid;grid-template-columns:112px 1fr 46px;font-size:.95rem;align-items:center;gap:8px;margin-top:6px}.sl input{accent-color:var(--blue);height:32px;min-width:0}.sl output{text-align:right;color:var(--mut);font-variant-numeric:tabular-nums;font-size:.9rem}
+@media(max-width:430px){#net{font-size:0;padding:0;width:12px;height:12px;min-width:12px;flex:none}}
+@media(min-width:700px){main{padding:24px}.opt:hover{border-color:var(--blue)}.tiles{grid-template-columns:repeat(4,1fr)}.tile.asas{grid-column:span 2}.hero{padding:26px 28px}.hero h2{font-size:1.9rem}.hs{max-width:460px}.mp{right:max(16px,calc((100vw - 960px)/2 + 24px))}}
+@media(max-width:380px){header{gap:6px;padding:0 10px}header h1{font-size:1.05rem}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--ua:1;--p:calc(var(--ua)*100%)}
+.ui-t .card,.ui-t .btn,.ui-t button:not(.pri):not(.hbtn){-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+@supports (background:color-mix(in srgb,red 50%,transparent)){
+.pri{background:linear-gradient(135deg,color-mix(in srgb,#3b6ff5 var(--p),transparent),color-mix(in srgb,#7c5cf0 var(--p),transparent))}
+.hero{background:linear-gradient(135deg,color-mix(in srgb,#2f6bf0 var(--p),transparent) 0,color-mix(in srgb,#5b5df0 var(--p),transparent) 55%,color-mix(in srgb,#8b5cf6 var(--p),transparent) 100%)}
+.tile.asas{background:linear-gradient(135deg,color-mix(in srgb,#ff8a3d var(--p),transparent),color-mix(in srgb,#f43f8e var(--p),transparent))}
+.tile.hist{background:linear-gradient(135deg,color-mix(in srgb,#10b981 var(--p),transparent),color-mix(in srgb,#06b6d4 var(--p),transparent))}
+.tile.mus{background:linear-gradient(135deg,color-mix(in srgb,#8b5cf6 var(--p),transparent),color-mix(in srgb,#6366f1 var(--p),transparent))}
+.bar{background:linear-gradient(120deg,color-mix(in srgb,#0b1d3a var(--p),transparent),color-mix(in srgb,#1e3a8a var(--p),transparent))}
+}
+.opt.ok{border-color:var(--ok);background:#e8f7ee}.opt.ok b{background:var(--ok);color:#fff}.opt.no{border-color:var(--bad);background:#fdeaea}.opt.no b{background:var(--bad);color:#fff}.fb{margin-top:10px;padding:10px 14px;border-radius:14px;background:#f0f4ff;border-left:5px solid var(--blue)}.fb.ok{border-color:var(--ok)}.fb.no{border-color:var(--bad)}.fb p{margin:6px 0 0}.tp{margin:10px 0}.bar2{height:8px;border-radius:99px;background:var(--bd);overflow:hidden;margin-top:4px}.bar2 i{display:block;height:100%;background:var(--ok)}.tp.weak .bar2 i{background:var(--bad)}
+.tile.gd{grid-column:1/-1;min-height:104px;background:linear-gradient(135deg,#f59e0b,#ef4444)}.stepl{padding-left:22px;margin:8px 0}.stepl li{margin:6px 0}.gg{display:flex;flex-wrap:wrap;gap:10px}.gg label{flex:1 1 130px;font-size:.85rem;color:var(--mut)}.gg input,.gg select{display:block;width:100%;margin-top:4px;font:inherit;padding:8px 10px;min-height:44px;border:1px solid var(--bd);border-radius:12px;background:#fff;color:var(--tx)}.gtxt{min-height:260px;font:.8rem/1.45 ui-monospace,Consolas,monospace}
+</style></head><body>
+<header><img src="icon-192.png" alt=""><h1>ExamForge</h1><button id="inst" class="pri" style="display:none">Install</button><button id="lbtn" class="hbtn lbtn"></button><button id="sbtn" class="hbtn" data-s="open" aria-haspopup="dialog"></button><button id="mbtn" class="hbtn" data-m="toggle" aria-expanded="false" aria-controls="mp"></button><span id="net">Online</span></header>
+<div id="bg" hidden aria-hidden="true"><img id="bg-i" alt="" hidden><video id="bg-v" muted loop playsinline autoplay preload="auto" hidden></video><div class="o"></div></div>
+<div id="st" class="st" hidden><div class="st-sheet" role="dialog" aria-modal="true" aria-labelledby="st-t"><div class="st-h"><b id="st-t"></b><button id="st-x" data-s="close"></button></div><div id="st-body"></div></div></div>
+<section id="mp" class="mp" hidden>
+<div class="mp-h"><b id="t-mt"></b><button data-m="close" id="m-x"></button></div>
+<div id="mp-name" class="mp-name empty"></div>
+<div class="mp-ctl"><button id="m-prev" class="sq" data-m="prev" disabled></button><button id="m-play" class="pri" data-m="play" disabled></button><button id="m-pause" data-m="pause" disabled></button><button id="m-stop" data-m="stop" disabled></button><button id="m-next" class="sq" data-m="next" disabled></button></div>
+<div class="mp-vol"><span id="m-vic"></span><input id="m-vol" type="range" min="0" max="100" step="1"><span id="m-volv"></span></div>
+<label class="mp-lp"><input type="checkbox" id="m-loop"><span id="t-lp"></span></label>
+<div id="m-list" class="m-list"></div>
+<div class="row"><label class="btn" for="mfile" id="m-add"></label><input id="mfile" type="file" multiple accept=".mp3,.wav,.ogg,audio/mpeg,audio/wav,audio/x-wav,audio/ogg" hidden></div>
+<p id="mp-st" class="mut mp-st" aria-live="polite"></p>
+</section>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),app=$('#app'),L=['A','B','C','D','E'];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s).toLowerCase().replace(/[^\p{L}\p{N}\s]/gu,' ').replace(/\s+/g,' ').trim();
+const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){alert(t('saveFail'))}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
+/* ---- Languages (EN / ID) ---- */
+const T={en:{bui:'Button transparency',bfrm:'Phone framing (ratio)',bfrmh:'Adjust how the background fits your phone screen. The preview has the same shape as your screen.',bfill:'Fill',bfit:'Fit',bstr:'Stretch',bzoom:'Zoom',bpx:'Left–Right',bpy:'Up–Down',helloN:n=>'Hello, '+n+'! 👋',from:n=>'From '+n,setupT:'Welcome to ExamForge',setupP:'Tell us a little about you. It is saved only on this device – no account needed.',pname:'Student name',pschool:'School name (optional)',pcls:'Class / Grade (optional)',pph:'e.g. Gudi',psave:'Save profile',pskip:'Skip',pneed:'Please enter your name.',
+stitle:'Settings',sprof:'Student Profile',saveCh:'Save changes',preset:'Reset profile',presetq:'Reset your profile? Your name, school and class will be removed.',psaved:'Saved ✓',sapp:'Appearance',btype:'Background type',bdef:'Default',bimg:'Image',bvid:'Video',upi:'Upload image',rpi:'Replace image',upv:'Upload video',rpv:'Replace video',brmi:'Remove image',brmv:'Remove video',bprev:'Preview',bnone:'Nothing to preview yet. Upload an image or video.',bapply:'Use as background',bon:'Show background',bop:'Opacity',bblur:'Blur',bdark:'Darkness',brst:'Reset appearance',
+bgbadi:'Please choose a PNG, JPG or WEBP image.',bgbadv:'Please choose an MP4 or WEBM video.',bgbig:n=>'This file is too large (max '+n+' MB).',bgmem:'Could not save the file on this device (storage full or blocked). It works until you close the app.',bgvfail:'The background could not be played, so the default background is shown.',bgtap:'Your browser blocked autoplay. Tap anywhere to start the video.',bgfirst:'Upload a file first, then choose this type.',inst:'Install',on:'Online',off:'Offline mode',hello:'Hello, student! 👋',ready:'Ready for your exam?',tag:'Import your questions and practise anytime – even offline.',qs:'questions',taken:'exams taken',avg:'avg. score',openbank:'Open question bank',nready:n=>n+' questions ready',hist:'History',nex:n=>n+(n>1?' exams taken':' exam taken'),noex:'No exams yet',music:'Music',musicsub:'Play your own study music',
+bank:'Question bank',mybanks:'My saved question banks',nobank:'No question bank imported yet. Import a .json file to begin.',file:'file',tl:'time limit',tp:'total points',none:'None',min:'min',usetm:'Use the timer',imp:'Import Question Bank',sample:'Load sample',start:'Start Examination',use:'Use',active:'Active',delb:'Remove this bank',delbc:'Remove this question bank from your saved list? History is kept.',history:'Examination history',noh:'No completed examinations yet.',retake:'Retake',retakeq:'Retake this examination now?',nobf:'Question bank not found',nobfd:'Import this question bank again to retake it.',
+saved:n=>'Saved "'+n+'" to your library',updated:n=>'Updated "'+n+'" in your library',cantread:n=>'Could not read "'+n+'"',notjson:m=>'This is not valid JSON: '+m,problem:n=>'"'+n+'" has a problem',nosample:'Sample not available',nosampled:'Open the app once while online, or import a .json file instead.',cantopen:'Could not open the file',saveFail:'Could not save: browser storage is full or blocked.',
+v_obj:'The file must contain a JSON object at the top level.',v_title:'Missing "title" (text).',v_subject:'Missing "subject" (text).',v_dur:'"duration" must be a number of minutes.',v_qs:'"questions" must be a non-empty list.',q_pre:i=>'Question '+i+': ',q_notobj:'is not an object.',q_text:'missing "question" text.',q_pts:'"points" must be a number above 0.',q_opts:'missing "options".',q_opt:k=>'option '+k+' is missing.',q_ans:'"answer" must be A, B, C, D or E.',q_kw:'"keywords" must be a list.',q_rb:'"rubric" must be a list.',q_need:'needs "expected_answer" or "keywords".',q_tf:'"answer" must be true or false (Benar/Salah).',tfT:'True',tfF:'False',prac:'Practice mode: see the answer and explanation after each question',matb:'Study notes',keyb:'Answer key',bytopic:'Score by topic',weak:'Review this topic',good:'Strong',okf:'Correct!',nof:'Not quite',q_type:'"type" must be "multiple_choice", "true_false" or "essay".',more:n=>'…and '+n+' more problems.',
+qn:(i,n)=>'Question '+i+' / '+n,pts:p=>'('+p+' pts)',ph:'Write your answer here…',answered:(a,n)=>a+' of '+n+' answered',prev:'◀ Prev',submit:'Submit',next:'Next ▶',qa:(i,a)=>'Question '+i+(a?' answered':''),notimer:'No timer',timeup:'Time is up. Your answers will now be submitted.',sub1:u=>u?'You have '+u+' unanswered question(s). Submit the examination now?':'Submit the examination now?',
+result:'Result',correct:'correct',incorrect:'incorrect',essays:'essays (estimated)',essnote:'Essay scores are <b>estimates</b> from local keyword matching, not a judgment of understanding. Adjust them below if needed — the total updates automatically.',back:'Back to dashboard',again:'Retake exam',yours:'Your answer:',na:'not answered',corr:'Correct answer:',expl:'Explanation:',exp:'Expected answer:',kwf:'Keywords found:',rub:'Rubric:',sc:'Score (estimated, editable):',
+mtitle:'Background music',nomusic:'Playlist is empty',addm:'Add music',addmore:'Add more music',rm:'Remove',play:'Play',pause:'Pause',stop:'Stop',repeat:'Repeat playlist',hint:'Add MP3, WAV or OGG files. They play on this device only – nothing is uploaded.',playing:'Playing',paused:'Paused',mready:'Ready – press Play.',badfile:n=>'“'+n+'” is not supported. Please choose an MP3, WAV or OGG file.',cantplay:n=>'This browser cannot play “'+n+'”. Try an MP3 file.',vol:'Volume',lang:'Change language',mus:'Music player',close:'Close'},
+id:{bui:'Transparansi tombol',bfrm:'Bingkai di HP (rasio)',bfrmh:'Atur cara latar belakang pas di layar HP-mu. Pratinjau berbentuk sama dengan layarmu.',bfill:'Penuh',bfit:'Muat',bstr:'Regang',bzoom:'Zoom',bpx:'Kiri–Kanan',bpy:'Atas–Bawah',helloN:n=>'Halo, '+n+'! 👋',from:n=>'Dari '+n,setupT:'Selamat datang di ExamForge',setupP:'Ceritakan sedikit tentang dirimu. Hanya disimpan di perangkat ini – tanpa akun.',pname:'Nama siswa',pschool:'Nama sekolah (opsional)',pcls:'Kelas (opsional)',pph:'cth. Gudi',psave:'Simpan profil',pskip:'Lewati',pneed:'Mohon isi namamu.',
+stitle:'Pengaturan',sprof:'Profil Siswa',saveCh:'Simpan perubahan',preset:'Reset profil',presetq:'Reset profilmu? Nama, sekolah, dan kelas akan dihapus.',psaved:'Tersimpan ✓',sapp:'Tampilan',btype:'Jenis latar belakang',bdef:'Bawaan',bimg:'Gambar',bvid:'Video',upi:'Unggah gambar',rpi:'Ganti gambar',upv:'Unggah video',rpv:'Ganti video',brmi:'Hapus gambar',brmv:'Hapus video',bprev:'Pratinjau',bnone:'Belum ada yang dipratinjau. Unggah gambar atau video.',bapply:'Pakai sebagai latar',bon:'Tampilkan latar belakang',bop:'Opasitas',bblur:'Blur',bdark:'Gelap',brst:'Reset tampilan',
+bgbadi:'Pilih gambar PNG, JPG, atau WEBP.',bgbadv:'Pilih video MP4 atau WEBM.',bgbig:n=>'File terlalu besar (maks '+n+' MB).',bgmem:'Tidak bisa menyimpan file di perangkat ini (penyimpanan penuh atau diblokir). File hanya bekerja sampai aplikasi ditutup.',bgvfail:'Latar belakang tidak bisa diputar, jadi latar bawaan ditampilkan.',bgtap:'Browser memblokir putar otomatis. Ketuk di mana saja untuk memulai video.',bgfirst:'Unggah file dulu, lalu pilih jenis ini.',inst:'Pasang',on:'Online',off:'Mode offline',hello:'Halo, pelajar! 👋',ready:'Siap ujian hari ini?',tag:'Impor soalmu dan berlatih kapan saja – bahkan tanpa internet.',qs:'soal',taken:'ujian selesai',avg:'rata-rata nilai',openbank:'Buka bank soal',nready:n=>n+' soal siap',hist:'Riwayat',nex:n=>n+' ujian selesai',noex:'Belum ada ujian',music:'Musik',musicsub:'Putar musik belajarmu sendiri',
+bank:'Bank soal',mybanks:'Bank soal tersimpan',nobank:'Belum ada bank soal. Impor file .json untuk memulai.',file:'file',tl:'batas waktu',tp:'total poin',none:'Tanpa batas',min:'menit',usetm:'Gunakan timer',imp:'Impor Bank Soal',sample:'Muat contoh',start:'Mulai Ujian',use:'Pakai',active:'Aktif',delb:'Hapus bank soal ini',delbc:'Hapus bank soal ini dari daftar tersimpan? Riwayat tetap disimpan.',history:'Riwayat ujian',noh:'Belum ada ujian yang selesai.',retake:'Ulangi',retakeq:'Ulangi ujian ini sekarang?',nobf:'Bank soal tidak ditemukan',nobfd:'Impor ulang bank soal ini untuk mengulang ujiannya.',
+saved:n=>'"'+n+'" disimpan ke daftarmu',updated:n=>'"'+n+'" diperbarui di daftarmu',cantread:n=>'Tidak dapat membaca "'+n+'"',notjson:m=>'Ini bukan JSON yang valid: '+m,problem:n=>'"'+n+'" bermasalah',nosample:'Contoh tidak tersedia',nosampled:'Buka aplikasi sekali saat online, atau impor file .json.',cantopen:'Tidak dapat membuka file',saveFail:'Gagal menyimpan: penyimpanan browser penuh atau diblokir.',
+v_obj:'File harus berisi objek JSON di tingkat paling atas.',v_title:'"title" (teks) belum ada.',v_subject:'"subject" (teks) belum ada.',v_dur:'"duration" harus berupa angka menit.',v_qs:'"questions" harus berupa daftar yang tidak kosong.',q_pre:i=>'Soal '+i+': ',q_notobj:'bukan objek.',q_text:'teks "question" belum ada.',q_pts:'"points" harus berupa angka lebih dari 0.',q_opts:'"options" belum ada.',q_opt:k=>'opsi '+k+' belum ada.',q_ans:'"answer" harus A, B, C, D, atau E.',q_kw:'"keywords" harus berupa daftar.',q_rb:'"rubric" harus berupa daftar.',q_need:'perlu "expected_answer" atau "keywords".',q_tf:'"answer" harus true atau false (Benar/Salah).',tfT:'Benar',tfF:'Salah',prac:'Mode latihan: lihat jawaban dan penjelasan setiap soal',matb:'Materi',keyb:'Kunci jawaban',bytopic:'Nilai per topik',weak:'Perlu dipelajari lagi',good:'Sudah bagus',okf:'Tepat!',nof:'Belum tepat',q_type:'"type" harus "multiple_choice", "true_false", atau "essay".',more:n=>'…dan '+n+' masalah lainnya.',
+qn:(i,n)=>'Soal '+i+' / '+n,pts:p=>'('+p+' poin)',ph:'Tulis jawabanmu di sini…',answered:(a,n)=>a+' dari '+n+' terjawab',prev:'◀ Sebelumnya',submit:'Kirim',next:'Berikutnya ▶',qa:(i,a)=>'Soal '+i+(a?' terjawab':''),notimer:'Tanpa timer',timeup:'Waktu habis. Jawabanmu akan dikirim sekarang.',sub1:u=>u?'Ada '+u+' soal belum dijawab. Kirim ujian sekarang?':'Kirim ujian sekarang?',
+result:'Hasil',correct:'benar',incorrect:'salah',essays:'esai (perkiraan)',essnote:'Nilai esai hanyalah <b>perkiraan</b> dari pencocokan kata kunci lokal, bukan penilaian pemahaman. Ubah di bawah jika perlu — total nilai diperbarui otomatis.',back:'Kembali ke dasbor',again:'Ulangi ujian',yours:'Jawabanmu:',na:'belum dijawab',corr:'Jawaban benar:',expl:'Penjelasan:',exp:'Jawaban yang diharapkan:',kwf:'Kata kunci ditemukan:',rub:'Rubrik:',sc:'Nilai (perkiraan, bisa diubah):',
+mtitle:'Musik latar',nomusic:'Playlist kosong',addm:'Tambah musik',addmore:'Tambah musik lagi',rm:'Hapus',play:'Putar',pause:'Jeda',stop:'Henti',repeat:'Ulangi playlist',hint:'Tambahkan file MP3, WAV, atau OGG. Hanya diputar di perangkat ini – tidak ada yang diunggah.',playing:'Sedang diputar',paused:'Dijeda',mready:'Siap – tekan Putar.',badfile:n=>'“'+n+'” tidak didukung. Pilih file MP3, WAV, atau OGG.',cantplay:n=>'Browser ini tidak dapat memutar “'+n+'”. Coba file MP3.',vol:'Volume',lang:'Ganti bahasa',mus:'Pemutar musik',close:'Tutup'}};
+Object.assign(T.en,{gTile:'Kisi-kisi → JSON',gTileSub:'Turn your study outline into questions with an AI prompt',gT:'Turn kisi-kisi into an ExamForge file',gS:'ExamForge reads a .json question file. Any AI (ChatGPT, Claude, Gemini…) can write it from your kisi-kisi if you give it the right prompt. Follow these steps:',
+g1:'Get your kisi-kisi as text or a clear photo – one subject per file.',g2:'Fill in the prompt builder below (subject, how many questions, time).',g3:'Tap “Copy prompt”, open your AI chat and paste it.',g4:'Under the prompt, paste your kisi-kisi text (or attach the photo) and send.',g5:'Copy the AI’s whole answer and paste it into the last box below. Or save it as a .json file and use Import.',g6:'Tap “Import pasted JSON”. If an error appears, tap “Copy fix prompt”, send it to the same AI chat, then import the corrected JSON.',
+gtip:'Tips: ask for 15–40 questions per batch · give each batch a different subject or title, because the same title replaces the old bank · read a few answers before the real exam – AI can make mistakes.',
+gb1:'1 · Prompt builder',gsub:'Subject',gph:'e.g. Biology, Class 9',gmc:'Multiple choice',gtf:'True / False',ges:'Essay',gdur:'Minutes (0 = no timer)',glang:'Question language',gb2:'2 · Your prompt',gcopy:'Copy prompt',gb3:'3 · Import',gpaste:'Paste the AI’s JSON answer here (code fences are removed automatically).',gimp:'Import pasted JSON',copied:'Copied ✓',fixp:'Copy fix prompt',
+shf:'Exam simulation: shuffle questions & options',drill:n=>'Drill my mistakes ('+n+')',drillT:'Mistake Drill'});
+Object.assign(T.id,{gTile:'Kisi-kisi → JSON',gTileSub:'Ubah kisi-kisi jadi soal dengan prompt AI',gT:'Ubah kisi-kisi jadi file ExamForge',gS:'ExamForge membaca file soal .json. AI apa pun (ChatGPT, Claude, Gemini…) bisa membuatnya dari kisi-kisimu kalau diberi prompt yang tepat. Ikuti langkah ini:',
+g1:'Siapkan kisi-kisi sebagai teks atau foto yang jelas – satu mapel per file.',g2:'Isi pembuat prompt di bawah (mapel, jumlah soal, waktu).',g3:'Ketuk “Salin prompt”, buka chat AI, lalu tempel.',g4:'Di bawah prompt, tempel teks kisi-kisimu (atau lampirkan fotonya) lalu kirim.',g5:'Salin seluruh jawaban AI dan tempel ke kotak terakhir di bawah. Atau simpan sebagai file .json lalu pakai Impor.',g6:'Ketuk “Impor JSON tempelan”. Kalau muncul error, ketuk “Salin prompt perbaikan”, kirim ke chat AI yang sama, lalu impor JSON yang sudah diperbaiki.',
+gtip:'Tips: minta 15–40 soal per sesi · beri mapel atau judul berbeda tiap sesi karena judul yang sama akan menimpa bank lama · baca beberapa jawaban sebelum ujian asli – AI bisa salah.',
+gb1:'1 · Pembuat prompt',gsub:'Mata pelajaran',gph:'cth. Biologi, Kelas 9',gmc:'Pilihan ganda',gtf:'Benar / Salah',ges:'Esai',gdur:'Menit (0 = tanpa timer)',glang:'Bahasa soal',gb2:'2 · Prompt-mu',gcopy:'Salin prompt',gb3:'3 · Impor',gpaste:'Tempel jawaban JSON dari AI di sini (pagar kode dibuang otomatis).',gimp:'Impor JSON tempelan',copied:'Tersalin ✓',fixp:'Salin prompt perbaikan',
+shf:'Simulasi ujian: acak soal & pilihan',drill:n=>'Latih soal yang salah ('+n+')',drillT:'Latihan Soal Salah'});
+let lang=ls.get('ef_lang',/^id/i.test(navigator.language||'')?'id':'en'),view='home';
+const t=(k,...a)=>{const v=(T[lang]&&T[lang][k])??T.en[k]??k;return typeof v==='function'?v(...a):v};
+
+/* ---- Saved question banks (library) ---- */
+let lib=ls.get('ef_lib',null);if(!Array.isArray(lib))lib=null;
+if(!lib){lib=[];const ob=ls.get('ef_bank',null);if(ob&&Array.isArray(ob.questions)){lib.push({id:Date.now(),name:ls.get('ef_file',''),bank:ob});ls.set('ef_lib',lib)}}
+lib=lib.filter(x=>x&&x.bank&&Array.isArray(x.bank.questions)&&x.bank.questions.length);
+let aid=ls.get('ef_active',null),bank=null,fname='',hist=ls.get('ef_hist',[]),ex=null,res=null,msg=null,tick=null;
+if(!Array.isArray(hist))hist=[];hist=hist.filter(x=>x&&typeof x==='object');
+function setActive(id){const e=lib.find(x=>x.id===id)||null;aid=e?e.id:null;bank=e?e.bank:null;fname=e?e.name:'';ls.set('ef_active',aid)}
+setActive(lib.some(x=>x.id===aid)?aid:(lib[0]?lib[0].id:null));
+
+/* ---- Icons ---- */
+const P={book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+cap:'<path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
+clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',music:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+play:'<polygon points="6 3 20 12 6 21 6 3" fill="currentColor"/>',pause:'<rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/>',stop:'<rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor"/>',
+prev:'<polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="19" x2="5" y2="5"/>',next:'<polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/>',
+upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
+vol:'<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>',x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',go:'<polyline points="9 18 15 12 9 6"/>',
+sliders:'<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>',
+globe:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',redo:'<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>'};
+const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
+
+/* ---- Music playlist (files stay on this device; nothing is uploaded) ---- */
+const mus={a:new Audio(),tr:[],cur:-1,err:''};let mid=0;
+const M_EXT=/\.(mp3|wav|ogg)$/i,M_MIME=/^audio\/(mpeg|mp3|wav|x-wav|wave|ogg|vorbis)$/i,mcur=()=>mus.tr[mus.cur]||null;
+mus.a.preload='auto';mus.a.autoplay=false;mus.a.loop=false;
+function mUI(){const a=mus.a,x=mcur(),pl=!!x&&!a.paused&&!a.ended,n=mus.tr.length;
+ const nm=$('#mp-name');nm.textContent=x?x.name:t('nomusic');nm.classList.toggle('empty',!x);
+ $('#m-play').disabled=!x||pl;$('#m-pause').disabled=!pl;$('#m-stop').disabled=!x||(!pl&&a.currentTime===0);$('#m-prev').disabled=$('#m-next').disabled=n<2;
+ $('#m-add').innerHTML=ic('upload')+t(n?'addmore':'addm');
+ $('#m-list').innerHTML=mus.tr.map((y,i)=>`<div class="trk ${i===mus.cur?'on':''}"><button class="tn" data-m="pick" data-i="${i}">${i===mus.cur&&pl?ic('music',16):'<span class="no">'+(i+1)+'</span>'}<span>${esc(y.name)}</span></button><button class="tx" data-m="rm" data-i="${i}" aria-label="${esc(t('rm'))}">${ic('x',16)}</button></div>`).join('');
+ const st=$('#mp-st');st.classList.toggle('err',!!mus.err);st.textContent=mus.err||(!x?t('hint'):pl?t('playing'):a.currentTime>0&&!a.ended?t('paused'):t('mready'));
+ $('#mbtn').classList.toggle('on',pl);const s=$('#mt-sub');if(s)s.textContent=x?x.name+(n>1?'  +'+(n-1):''):t('musicsub')}
+function mLoad(i){const x=mus.tr[i];if(!x)return;mus.cur=i;mus.a.src=x.url;mus.a.load()}
+function mPlay(){if(!mcur())return;mus.err='';const p=mus.a.play();if(p&&p.catch)p.catch(e=>{if(e&&e.name==='AbortError')return;mus.err=t('cantplay',mcur()?mcur().name:'');mUI()});mUI()}
+function mStop(){mus.a.pause();try{mus.a.currentTime=0}catch(e){}mUI()}
+function mStep(d,play){const n=mus.tr.length;if(!n)return;mLoad((mus.cur+d+n)%n);if(play)mPlay();else mUI()}
+function mAdd(files){mus.err='';for(const f of files){if(!M_EXT.test(f.name)&&!M_MIME.test(f.type)){mus.err=t('badfile',f.name);continue}mus.tr.push({id:++mid,name:f.name,url:URL.createObjectURL(f)})}if(mus.cur<0&&mus.tr.length)mLoad(0);mUI()}
+function mRm(i){const x=mus.tr[i];if(!x)return;const was=i===mus.cur;if(was)mus.a.pause();URL.revokeObjectURL(x.url);mus.tr.splice(i,1);
+ if(!mus.tr.length){mus.cur=-1;mus.a.removeAttribute('src');mus.a.load()}else if(was)mLoad(Math.min(i,mus.tr.length-1));else if(i<mus.cur)mus.cur--;mUI()}
+function mOpen(o){$('#mp').hidden=!o;$('#mbtn').setAttribute('aria-expanded',String(o))}
+['play','pause'].forEach(v=>mus.a.addEventListener(v,mUI));
+mus.a.addEventListener('ended',()=>{if(mus.cur<mus.tr.length-1||$('#m-loop').checked)mStep(1,true);else mUI()});
+mus.a.addEventListener('error',()=>{const x=mcur();if(!x)return;mRm(mus.cur);mus.err=t('cantplay',x.name);mUI()});
+{const v=Math.min(100,Math.max(0,+ls.get('ef_vol',70)||0)),vs=$('#m-vol');vs.value=v;mus.a.volume=v/100;$('#m-volv').textContent=v+'%';
+ vs.addEventListener('input',()=>{mus.a.volume=vs.value/100;$('#m-volv').textContent=vs.value+'%'});vs.addEventListener('change',()=>ls.set('ef_vol',+vs.value));
+ const lp=$('#m-loop');lp.checked=ls.get('ef_loop',true)!==false;lp.addEventListener('change',()=>ls.set('ef_loop',lp.checked))}
+$('#mfile').addEventListener('change',e=>{const f=[...e.target.files];e.target.value='';if(f.length)mAdd(f)});
+document.addEventListener('click',e=>{
+ const m=e.target.closest('[data-m]');
+ if(m){const i=+m.dataset.i;switch(m.dataset.m){case'toggle':mOpen($('#mp').hidden);break;case'close':mOpen(false);break;case'play':mPlay();break;case'pause':mus.a.pause();break;case'stop':mStop();break;case'prev':mStep(-1,!mus.a.paused);break;case'next':mStep(1,!mus.a.paused);break;case'pick':if(i===mus.cur&&!mus.a.paused)mus.a.pause();else{if(i!==mus.cur)mLoad(i);mPlay()}break;case'rm':mRm(i);break}return}
+ const j=e.target.closest('[data-jump]');
+ if(j){const el=document.getElementById(j.dataset.jump);if(el){el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}return}
+ if(!$('#mp').hidden&&!e.target.closest('#mp'))mOpen(false)});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#mp').hidden){mOpen(false);$('#mbtn').focus()}});
+
+/* ---- Question-bank import (same rules as before; messages are translated) ---- */
+function validate(d){const e=[];
+if(!d||typeof d!=='object'||Array.isArray(d))return{e:[t('v_obj')]};
+if(typeof d.title!=='string'||!d.title.trim())e.push(t('v_title'));
+if(typeof d.subject!=='string'||!d.subject.trim())e.push(t('v_subject'));
+if(d.duration!=null&&!(typeof d.duration==='number'&&d.duration>=0))e.push(t('v_dur'));
+if(!Array.isArray(d.questions)||!d.questions.length)return{e:[...e,t('v_qs')]};
+const qs=d.questions.map((q,i)=>{const n=t('q_pre',i+1);
+ if(!q||typeof q!=='object'){e.push(n+t('q_notobj'));return null}
+ if(typeof q.question!=='string'||!q.question.trim())e.push(n+t('q_text'));
+ const p=q.points==null?1:q.points;if(typeof p!=='number'||!(p>0))e.push(n+t('q_pts'));
+ let ans=typeof q.answer==='string'?q.answer.trim().toUpperCase():q.answer;
+ if(q.type==='true_false'){const m={TRUE:'B',BENAR:'B',B:'B',T:'B',YA:'B',FALSE:'S',SALAH:'S',S:'S',F:'S'};ans=ans===true?'B':ans===false?'S':m[ans]}
+ if(q.type==='multiple_choice'){
+  if(!q.options||typeof q.options!=='object')e.push(n+t('q_opts'));
+  else for(const k of L)if(typeof q.options[k]!=='string'||!q.options[k].trim())e.push(n+t('q_opt',k));
+  if(!L.includes(ans))e.push(n+t('q_ans'));
+ }else if(q.type==='true_false'){
+  if(ans!=='B'&&ans!=='S')e.push(n+t('q_tf'));
+ }else if(q.type==='essay'){
+  if(q.keywords!=null&&!Array.isArray(q.keywords))e.push(n+t('q_kw'));
+  if(q.rubric!=null&&!Array.isArray(q.rubric))e.push(n+t('q_rb'));
+  if(!q.expected_answer&&!(Array.isArray(q.keywords)&&q.keywords.length))e.push(n+t('q_need'));
+ }else e.push(n+t('q_type'));
+ return{...q,topic:typeof q.topic==='string'?q.topic.trim():'',answer:ans,points:p,keywords:Array.isArray(q.keywords)?q.keywords.map(String):[],rubric:Array.isArray(q.rubric)?q.rubric:[]}});
+if(e.length)return{e:e.slice(0,8).concat(e.length>8?[t('more',e.length-8)]:[])};
+return{bank:{title:d.title.trim(),subject:d.subject.trim(),duration:d.duration||0,questions:qs,materi:Array.isArray(d.materi)?d.materi.filter(m=>m&&typeof m==='object'):[]}}}
+
+function load(text,name){let d;
+ try{d=JSON.parse(cleanJ(text))}catch(x){lastErr=[t('notjson',x.message)];msg={t:'err',h:t('cantread',name),l:lastErr};return home()}
+ const v=validate(d);if(v.e){lastErr=v.e;msg={t:'err',h:t('problem',name),l:v.e};return home()}
+ const k=s=>(s.title+'|'+s.subject).toLowerCase(),old=lib.find(x=>k(x.bank)===k(v.bank));let id;
+ if(old){old.bank=v.bank;old.name=name;id=old.id}else{id=Date.now();lib.push({id,name,bank:v.bank})}
+ ls.set('ef_lib',lib);setActive(id);msg={t:'ok',h:t(old?'updated':'saved',name),l:[]};home()}
+
+function home(){if(!prof)return setup();if(drill){bank=drill.bank;aid=drill.aid;drill=null}view='home';clearInterval(tick);ex=null;res=null;window.onbeforeunload=null;scrollTo(0,0);
+ const m=msg,avg=hist.length?Math.round(hist.reduce((s,h)=>s+(+h.score||0),0)/hist.length*10)/10:'–';msg=null;
+ app.innerHTML=(m?`<div class="msg ${m.t}"><b>${esc(m.h)}</b>${m.l.length?'<ul>'+m.l.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>':''}${m.t==='err'&&m.l.length?`<div class="row"><button data-do="fixp">${t('fixp')}</button></div>`:''}</div>`:'')+
+ `<section class="hero">${heroTop()}
+ <div class="hs"><div><b>${bank?bank.questions.length:0}</b>${t('qs')}</div><div><b>${hist.length}</b>${t('taken')}</div><div><b>${avg}</b>${t('avg')}</div></div></section>
+ <div class="tiles">
+ <button class="tile asas" data-jump="bank-card" aria-label="ASAS"><span class="ti">${ic('cap',28)}</span><b>ASAS</b><small>Asesmen Sumatif Akhir Semester</small><span class="go">${bank?t('nready',bank.questions.length):t('openbank')} ${ic('go',14)}</span></button>
+ <button class="tile hist" data-jump="hist-card"><span class="ti">${ic('clock',24)}</span><b>${t('hist')}</b><small>${hist.length?t('nex',hist.length):t('noex')}</small></button>
+ <button class="tile mus" data-m="toggle"><span class="ti">${ic('music',24)}</span><b>${t('music')}</b><small id="mt-sub"></small></button>
+ <button class="tile gd" data-do="guide"><span class="ti">${ic('book',24)}</span><b>${t('gTile')}</b><small>${t('gTileSub')}</small></button>
+ </div>
+ <div class="card" id="bank-card"><h2 class="ch"><span class="ci">${ic('book',20)}</span>${t('bank')} <span class="tag">ASAS</span></h2>${bank?`<div style="font-weight:700;font-size:1.2rem">${esc(bank.title)}</div><div class="mut">${esc(bank.subject)} · ${t('file')}: ${esc(fname)}</div>
+ <div class="stats"><div class="stat"><b>${bank.questions.length}</b>${t('qs')}</div><div class="stat"><b>${bank.duration?bank.duration+' '+t('min'):t('none')}</b>${t('tl')}</div><div class="stat"><b>${bank.questions.reduce((s,q)=>s+q.points,0)}</b>${t('tp')}</div></div>
+ ${bank.duration?`<label><input type="checkbox" id="usetm" checked> ${t('usetm')}</label>`:''}
+ <label style="display:block"><input type="checkbox" id="prac"> ${t('prac')}</label>${bank?`<label style="display:block"><input type="checkbox" id="shf"> ${t('shf')}</label>`:''}`:`<p class="mut">${t('nobank')}</p>`}
+ <div class="row"><label class="btn ${bank?'':'pri'}" for="file">${ic('upload',18)}${t('imp')}</label><input id="file" type="file" accept=".json,application/json" hidden>
+ <button data-do="sample">${t('sample')}</button>${bank&&(bank.materi||[]).length?`<button data-do="materi">${t('matb')}</button>`:''}${mis.length?`<button data-do="drill">${t('drill',mis.length)}</button>`:''}${bank?`<button data-do="key">${t('keyb')}</button>`:''}${bank?`<button class="pri" data-do="start">${t('start')}</button>`:''}</div>
+ ${lib.length?`<h3 class="sub">${t('mybanks')} (${lib.length})</h3>`+lib.map(x=>`<div class="hr"><div><b>${esc(x.bank.title)}</b><div class="mut">${esc(x.bank.subject)} · ${x.bank.questions.length} ${t('qs')}</div></div>${x.id===aid?`<span class="sc">${t('active')}</span>`:`<button data-do="use" data-id="${x.id}">${t('use')}</button>`}<button class="dng" data-do="delb" data-id="${x.id}" aria-label="${esc(t('delb'))}">✕</button></div>`).join(''):''}</div>
+ <div class="card" id="hist-card"><h2 class="ch"><span class="ci g">${ic('clock',20)}</span>${t('history')}</h2>${hist.length?hist.map(h=>`<div class="hr"><div><b>${esc(h.subject)}</b><div class="mut">${esc(h.title)} · ${new Date(h.date).toLocaleString(lang==='id'?'id-ID':undefined)} · ${h.n} ${t('qs')}</div></div><span class="sc">${h.score}</span><button class="rt" data-do="retake" data-id="${h.id}">${ic('redo',16)}${t('retake')}</button><button class="dng" data-do="delh" data-id="${h.id}" aria-label="Delete">✕</button></div>`).join(''):`<p class="mut">${t('noh')}</p>`}</div><p class="mut" style="text-align:center;margin:4px 0 0">ExamForge v2.4</p>`;
+ try{mUI()}catch(e){}}
+
+function startExam(fd){const u=$('#usetm'),sh=fd?true:$('#shf')?$('#shf').checked:!!(res&&res.sh);
+ ex={a:{},cur:0,prac:fd?true:$('#prac')?$('#prac').checked:!!(res&&res.prac),sh,qs:(sh?shuf(bank.questions):bank.questions).map(q=>mk(q,sh)),end:bank.duration&&(!u||u.checked)?Date.now()+bank.duration*6e4:0};
+ window.onbeforeunload=e=>{e.preventDefault();e.returnValue=''};
+ clearInterval(tick);tick=setInterval(tm,1000);draw()}
+function tm(){const e=$('#tm');if(!e||!ex)return;if(!ex.end){e.textContent=t('notimer');return}
+ const l=Math.max(0,Math.round((ex.end-Date.now())/1000));
+ e.textContent='⏱ '+String(Math.floor(l/60)).padStart(2,'0')+':'+String(l%60).padStart(2,'0');e.classList.toggle('low',l<60);
+ if(l<=0){alert(t('timeup'));submit(true)}}
+const nums=()=>ex.qs.map((q,i)=>`<button class="${i===ex.cur?'cur':ex.a[i]!=null?'done':''}" data-go="${i}" aria-label="${t('qa',i+1,ex.a[i]!=null)}">${i+1}</button>`).join('');
+const cnt=()=>Object.keys(ex.a).length;
+const tfl=k=>t(k==='B'?'tfT':'tfF'),isObj=q=>q.type!=='essay',aTxt=(q,k)=>q.type==='true_false'?tfl(k):k+'. '+q.options[k];
+function draw(){view='exam';const q=ex.qs[ex.cur],n=ex.qs.length;scrollTo(0,0);const pa=ex.prac&&isObj(q)&&ex.a[ex.cur]!=null,oc=k=>pa?(k===q.answer?'ok':k===ex.a[ex.cur]?'no':''):ex.a[ex.cur]===k?'sel':'';
+ app.innerHTML=`<div class="bar"><b>${t('qn',ex.cur+1,n)}</b><span id="tm" class="tm"></span></div>
+ <div class="card"><div class="qt">${esc(q.question)} <span class="pts">${t('pts',q.points)}</span></div>
+ ${q.type==='true_false'?['B','S'].map(k=>`<button class="opt ${oc(k)}" data-pick="${k}"><b>${tfl(k)[0]}</b><span>${tfl(k)}</span></button>`).join(''):q.type==='multiple_choice'?L.map(k=>`<button class="opt ${oc(k)}" data-pick="${k}"><b>${k}</b><span>${esc(q.options[k])}</span></button>`).join(''):`<textarea id="es" placeholder="${esc(t('ph'))}">${esc(ex.a[ex.cur]||'')}</textarea>`}${pa?`<div class="fb ${ex.a[ex.cur]===q.answer?'ok':'no'}"><b>${t(ex.a[ex.cur]===q.answer?'okf':'nof')}</b>${q.explanation?'<p>'+esc(q.explanation)+'</p>':''}</div>`:''}</div>
+ <div class="card"><div class="grid" id="gr">${nums()}</div><p class="mut" id="ct" style="margin:8px 0 0">${t('answered',cnt(),n)}</p></div>
+ <div class="nav"><button data-do="prev" ${ex.cur?'':'disabled'}>${t('prev')}</button><button class="dng" data-do="submit">${t('submit')}</button><button class="pri" data-do="next" ${ex.cur<n-1?'':'disabled'}>${t('next')}</button></div>`;tm()}
+function matV(){view='materi';scrollTo(0,0);app.innerHTML=`<div class="card"><h2>${t('matb')} · ${esc(bank.title)}</h2>`+bank.materi.map(m=>`<h3>${esc(m.heading||'')}</h3><ul>`+(Array.isArray(m.points)?m.points:[]).map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>').join('')+`<div class="row"><button class="pri" data-do="home">${t('back')}</button></div></div>`}
+function keyV(){view='key';scrollTo(0,0);app.innerHTML=`<div class="card"><h2>${t('keyb')} · ${esc(bank.title)}</h2><div class="row"><button class="pri" data-do="home">${t('back')}</button></div></div>`+bank.questions.map((q,i)=>`<div class="card rv ok"><div class="qt">${i+1}. ${esc(q.question)}</div>`+(q.topic?`<div class="mut">${esc(q.topic)}</div>`:'')+(isObj(q)?`<div class="ans">${t('corr')} <b>${esc(aTxt(q,q.answer))}</b></div>${q.explanation?`<p><b>${t('expl')}</b> ${esc(q.explanation)}</p>`:''}`:(q.expected_answer?`<div class="ans">${t('exp')}\n${esc(q.expected_answer)}</div>`:''))+'</div>').join('')}
+function submit(force){const n=ex.qs.length,un=n-cnt();
+ if(!force&&!confirm(t('sub1',un)))return;
+ clearInterval(tick);window.onbeforeunload=null;
+ const items=ex.qs.map((q,i)=>{const a=ex.a[i];
+  if(isObj(q)){const ok=a===q.answer;return{q,a,ok,sc:ok?q.points:0,max:q.points}}
+  const tt=norm(a||''),ks=q.keywords,hit=[];let f=0;
+  if(ks.length){ks.forEach(k=>{const kk=norm(k);if(!kk)return;if(tt.includes(kk)){hit.push(k);f++}else{const w=kk.split(' ').filter(x=>x.length>3);if(w.length>1){const r=w.filter(x=>tt.includes(x)).length/w.length;if(r>=.6)f+=r*.5}}});f/=ks.length}
+  else{const w=[...new Set(norm(q.expected_answer).split(' ').filter(x=>x.length>3))];f=w.length?w.filter(x=>tt.includes(x)).length/w.length:0}
+  return{q,a,sc:Math.round(q.points*Math.min(1,f)*10)/10,max:q.points,hit}});
+ res={items,prac:ex.prac,sh:ex.sh,rec:{id:Date.now(),bid:aid,subject:bank.subject,title:bank.title,date:new Date().toISOString(),n,score:0}};
+ if(!drill)hist.unshift(res.rec);noteMis(items);saveRes();result()}
+function tot(){const e=res.items.reduce((s,x)=>s+x.sc,0),m=res.items.reduce((s,x)=>s+x.max,0);return m?Math.round(e/m*1000)/10:0}
+function saveRes(){res.rec.score=tot();ls.set('ef_hist',hist)}
+function topicHtml(){const tp={};res.items.forEach(x=>{const k=x.q.topic;if(!k)return;const o=tp[k]||(tp[k]={e:0,m:0});o.e+=x.sc;o.m+=x.max});const tk=Object.entries(tp);
+ return tk.length?`<h3 class="sub">${t('bytopic')}</h3>`+tk.map(([k,o])=>{const p=o.m?Math.round(o.e/o.m*100):0;return `<div class="tp ${p<75?'weak':''}"><div class="row" style="justify-content:space-between"><b>${esc(k)}</b><span>${p}% · ${t(p<75?'weak':'good')}</span></div><div class="bar2"><i style="width:${p}%"></i></div></div>`}).join(''):''}
+function result(){view='result';scrollTo(0,0);const th=topicHtml();const mc=res.items.filter(x=>isObj(x.q)),ok=mc.filter(x=>x.ok).length,es=res.items.filter(x=>x.q.type==='essay');
+ app.innerHTML=`<div class="card"><h2>${t('result')} · ${esc(bank.title)}</h2><div class="big"><span id="fs">${tot()}</span><span class="mut" style="font-size:1rem"> / 100</span></div>
+ <div class="stats"><div class="stat"><b style="color:var(--ok)">${ok}</b>${t('correct')}</div><div class="stat"><b style="color:var(--bad)">${mc.length-ok}</b>${t('incorrect')}</div><div class="stat"><b>${es.length}</b>${t('essays')}</div></div>
+ <p class="mut">${t('essnote')}</p>${th}
+ <div class="row"><button class="pri" data-do="home">${t('back')}</button><button data-do="again">${ic('redo',16)}${t('again')}</button>${mis.length?`<button data-do="drill">${t('drill',mis.length)}</button>`:''}</div></div>`+
+ res.items.map((x,i)=>{const q=x.q,mcq=isObj(q);
+ return `<div class="card rv ${mcq?(x.ok?'ok':'no'):'es'}"><div class="qt">${i+1}. ${esc(q.question)}</div>`+
+ (mcq?`<div class="ans">${t('yours')} ${x.a?esc(aTxt(q,x.a)):'<i>'+t('na')+'</i>'}</div><div class="ans">${t('corr')} <b>${esc(aTxt(q,q.answer))}</b></div>${q.explanation?`<p><b>${t('expl')}</b> ${esc(q.explanation)}</p>`:''}<div class="mut">${x.sc} / ${x.max} ${lang==='id'?'poin':'pts'}</div>`
+ :`<div class="ans">${t('yours')}\n${x.a?esc(x.a):'<i>'+t('na')+'</i>'}</div>${q.expected_answer?`<div class="ans">${t('exp')}\n${esc(q.expected_answer)}</div>`:''}
+ ${q.keywords.length?`<p class="mut">${t('kwf')} ${x.hit.length?esc(x.hit.join(', ')):'–'} (${x.hit.length}/${q.keywords.length})</p>`:''}
+ ${q.rubric.length?'<p class="mut">'+t('rub')+' '+q.rubric.map(r=>esc(r.criterion)+' ('+esc(r.points)+')').join(' · ')+'</p>':''}
+ <label>${t('sc')} <input type="number" min="0" max="${x.max}" step="0.5" value="${x.sc}" data-adj="${i}"> / ${x.max}</label>`)+`</div>`}).join('')}
+
+document.addEventListener('click',e=>{const el=e.target.closest('[data-do],[data-go],[data-pick]');if(!el)return;const d=el.dataset;
+ if(d.pick){if(ex.prac&&ex.a[ex.cur]!=null)return;ex.a[ex.cur]=d.pick;return draw()}
+ if(d.go!==undefined){ex.cur=+d.go;return draw()}
+ switch(d.do){
+ case'start':return startExam();
+ case'guide':return guideV();
+ case'drill':return startDrill();
+ case'fixp':return cp(fixPrompt(),el);
+ case'gcopy':return cp($('#gp').value,el);
+ case'gimp':{const v=$('#pj').value;if(v.trim())load(v,'pasted.json');return}
+ case'materi':return matV();
+ case'key':return keyV();
+ case'prev':ex.cur--;return draw();
+ case'next':ex.cur++;return draw();
+ case'submit':return submit();
+ case'home':return home();
+ case'again':return startExam();
+ case'use':setActive(+d.id);return home();
+ case'delb':if(confirm(t('delbc'))){lib=lib.filter(x=>String(x.id)!==d.id);ls.set('ef_lib',lib);if(String(aid)===d.id)setActive(lib[0]?lib[0].id:null);home()}return;
+ case'retake':{const h=hist.find(x=>String(x.id)===d.id),b=h&&(lib.find(x=>x.id===h.bid)||lib.find(x=>x.bank.title===h.title&&x.bank.subject===h.subject));
+  if(!b){msg={t:'err',h:t('nobf'),l:[t('nobfd')]};return home()}
+  if(!confirm(t('retakeq')))return;setActive(b.id);const u=$('#usetm');if(u)u.checked=true;return startExam()}
+ case'delh':if(confirm(lang==='id'?'Hapus catatan riwayat ini?':'Delete this history record?')){hist=hist.filter(h=>h.id!=d.id);ls.set('ef_hist',hist);home()}return;
+ case'sample':fetch('questions.json').then(r=>{if(!r.ok)throw 0;return r.text()}).then(x=>load(x,'questions.json')).catch(()=>{msg={t:'err',h:t('nosample'),l:[t('nosampled')]};home()});return}});
+document.addEventListener('input',e=>{if(e.target.id==='es'&&ex){const v=e.target.value;if(v.trim())ex.a[ex.cur]=v;else delete ex.a[ex.cur];$('#gr').innerHTML=nums();$('#ct').textContent=t('answered',cnt(),ex.qs.length)}});
+document.addEventListener('change',e=>{const el=e.target;
+ if(el.id==='file'){const f=el.files[0];el.value='';if(f){const r=new FileReader();r.onload=()=>load(r.result,f.name);r.onerror=()=>{msg={t:'err',h:t('cantopen'),l:[]};home()};r.readAsText(f)}}
+ if(el.dataset.adj!==undefined&&res){const x=res.items[+el.dataset.adj];let v=parseFloat(el.value);if(isNaN(v))v=0;v=Math.min(x.max,Math.max(0,v));x.sc=v;el.value=v;saveRes();$('#fs').textContent=tot()}});
+
+/* ---- v2.4: kisi-kisi guide, shuffle simulation, mistake drill ---- */
+let drill=null,lastErr=[],mis=ls.get('ef_mis',[]);if(!Array.isArray(mis))mis=[];mis=mis.filter(m=>m&&m.q&&typeof m.k==='string');
+const cleanJ=s=>{s=String(s).replace(/^\uFEFF/,'').trim();const m=s.match(/```(?:json)?\s*([\s\S]*?)```/i);if(m)s=m[1];const a=s.indexOf('{'),b=s.lastIndexOf('}');return a>=0&&b>a?s.slice(a,b+1):s};
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+function mk(q,sh){if(!sh||q.type!=='multiple_choice')return{...q,_o:q};const o={};let an=q.answer;shuf(L.map(k=>[k,q.options[k]])).forEach(([k,x],i)=>{o[L[i]]=x;if(k===q.answer)an=L[i]});return{...q,options:o,answer:an,_o:q}}
+function noteMis(items){let ch=0;items.forEach(x=>{const q=x.q._o||x.q,bad=isObj(x.q)?!x.ok:x.sc<x.max*.6,i=mis.findIndex(m=>m.k===q.question);
+ if(bad&&i<0){mis.push({k:q.question,s:bank.subject,q});ch=1}else if(!bad&&i>=0){mis.splice(i,1);ch=1}});
+ if(mis.length>150)mis.splice(0,mis.length-150);if(ch)ls.set('ef_mis',mis)}
+function startDrill(){if(!mis.length)return;if(!drill)drill={bank,aid};
+ bank={title:t('drillT'),subject:[...new Set(mis.map(m=>m.s).filter(Boolean))].slice(0,3).join(', ')||'Review',duration:0,questions:mis.map(m=>m.q),materi:[]};startExam(1)}
+async function cp(s,b){try{await navigator.clipboard.writeText(s)}catch(e){const a=document.createElement('textarea');a.value=s;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(x){}a.remove()}
+ if(b){const o=b.innerHTML;b.textContent=t('copied');setTimeout(()=>{b.innerHTML=o},1400)}}
+const fixPrompt=()=>['The JSON you gave me failed the ExamForge checker with these errors:',...lastErr.map(x=>'- '+x),'','Fix ONLY these problems, keep everything else unchanged, and send back the COMPLETE corrected JSON as raw JSON only (no markdown fences, no explanation). Reminder: multiple_choice needs exactly 5 options A-E and one "answer" letter; true_false answer is true or false (no quotes); essay needs "expected_answer" or "keywords".'].join('\n');
+const gv=i=>($('#'+i)||{}).value;
+function gp(){const sj=(gv('gs')||'').trim()||'[SUBJECT]',n=k=>Math.min(100,Math.max(0,parseInt(gv(k))||0)),mc=n('gm'),tf=n('gt'),es=n('ge'),du=n('gd'),lg=gv('gl')||'English';
+return `ROLE: You are an expert teacher and exam writer.
+TASK: Turn the KISI-KISI (exam blueprint / study outline) that I paste or attach after this prompt into ONE JSON file for the ExamForge exam app. Subject: ${sj}. Write everything in ${lg}. If the kisi-kisi is a photo, read it carefully first.
+
+OUTPUT RULES
+1. Reply with raw JSON only: no markdown fences, no comments, no text before or after. Double quotes only, no trailing commas.
+2. Create exactly ${mc} multiple_choice, ${tf} true_false and ${es} essay questions, spread over every topic/indicator in the kisi-kisi (more questions for heavier topics).
+3. Use only content from the kisi-kisi. Never invent facts. One question tests one indicator.
+4. "topic" = the short topic/indicator name from the kisi-kisi, spelled identically every time (the app uses it for the weak-topic report).
+5. multiple_choice: exactly 5 options "A" to "E" and exactly one correct "answer" (a single capital letter). Do NOT use "all of the above", "none of the above" or "A and B" options, because the app shuffles the options. Make wrong options plausible and similar in length; spread correct answers over A-E.
+6. true_false: "answer" is the boolean true or false (no quotes). Write full statements, not questions.
+7. essay: give "expected_answer" (model answer, 2-4 sentences), 4-8 "keywords" (short lowercase words a student would literally write) and a "rubric" list whose points add up to the question's points.
+8. Every question needs a short "explanation" of why the answer is right. Points: multiple_choice 2, true_false 1, essay 5.
+9. "materi" = study notes: one entry per topic with 3-6 short key points.
+10. "duration" = exam time in minutes (${du}${du?'':' means no timer'}).
+
+JSON SHAPE (follow exactly):
+{
+ "title": "ASAS ${sj}",
+ "subject": "${sj}",
+ "duration": ${du},
+ "materi": [ { "heading": "Topic name", "points": ["key point 1", "key point 2"] } ],
+ "questions": [
+  { "type": "multiple_choice", "topic": "Topic name", "question": "Question text?", "options": { "A": "...", "B": "...", "C": "...", "D": "...", "E": "..." }, "answer": "C", "points": 2, "explanation": "Why C is correct." },
+  { "type": "true_false", "topic": "Topic name", "question": "A full statement.", "answer": true, "points": 1, "explanation": "Why it is true." },
+  { "type": "essay", "topic": "Topic name", "question": "Explain ...", "expected_answer": "Model answer.", "keywords": ["term one", "term two", "term three", "term four"], "rubric": [ { "criterion": "Mentions term one", "points": 2 }, { "criterion": "Explains the cause", "points": 3 } ], "points": 5 }
+ ]
+}
+
+Before you answer, double-check: valid JSON, the counts are correct, every multiple_choice has A-E and one answer.
+
+KISI-KISI:
+[paste your kisi-kisi here, or attach the photo]`}
+function guideV(){view='guide';clearInterval(tick);scrollTo(0,0);
+ const st=[1,2,3,4,5,6].map(i=>`<li>${t('g'+i)}</li>`).join(''),f=(id,l,v)=>`<label>${l}<input id="${id}" class="gb" type="number" min="0" max="100" value="${v}"></label>`;
+ app.innerHTML=`<div class="card"><h2 class="ch"><span class="ci">${ic('book',20)}</span>${t('gT')}</h2><p class="mut">${t('gS')}</p><ol class="stepl">${st}</ol><p class="mut">${t('gtip')}</p></div>
+ <div class="card"><h3 style="margin:0 0 8px">${t('gb1')}</h3><div class="gg"><label style="flex:1 1 100%">${t('gsub')}<input id="gs" class="gb" maxlength="60" placeholder="${esc(t('gph'))}"></label>${f('gm',t('gmc'),20)}${f('gt',t('gtf'),5)}${f('ge',t('ges'),3)}${f('gd',t('gdur'),60)}<label>${t('glang')}<select id="gl" class="gb"><option${lang==='id'?' selected':''}>Bahasa Indonesia</option><option${lang==='id'?'':' selected'}>English</option></select></label></div>
+ <h3 style="margin:14px 0 6px">${t('gb2')}</h3><textarea id="gp" class="gtxt" readonly></textarea><div class="row"><button class="pri" data-do="gcopy">${t('gcopy')}</button></div></div>
+ <div class="card"><h3 style="margin:0 0 8px">${t('gb3')}</h3><p class="mut">${t('gpaste')}</p><textarea id="pj" class="gtxt" style="min-height:140px"></textarea><div class="row"><button class="pri" data-do="gimp">${t('gimp')}</button><button data-do="home">${t('back')}</button></div></div>`;
+ $('#gp').value=gp()}
+document.addEventListener('input',e=>{if(view==='guide'&&e.target.classList&&e.target.classList.contains('gb'))$('#gp').value=gp()});
+
+/* ---- Student profile (localStorage only; no account) ---- */
+let prof=ls.get('ef_prof',null);if(!prof||typeof prof!=='object')prof=null;
+const pf=(pre,p)=>`<label class="fld"><span>${t('pname')} *</span><input id="${pre}n" maxlength="60" autocomplete="name" value="${esc(p.name||'')}" placeholder="${esc(t('pph'))}"></label><label class="fld"><span>${t('pschool')}</span><input id="${pre}s" maxlength="80" autocomplete="organization" value="${esc(p.school||'')}"></label><label class="fld"><span>${t('pcls')}</span><input id="${pre}c" maxlength="30" value="${esc(p.cls||'')}"></label><p class="perr" id="${pre}e"></p>`;
+function setup(){view='setup';clearInterval(tick);scrollTo(0,0);app.innerHTML=`<div class="card"><h2 class="ch"><span class="ci">${ic('cap',20)}</span>${t('setupT')}</h2><p class="mut">${t('setupP')}</p>${pf('pf',{})}<div class="row"><button class="pri" data-s="psave" data-pre="pf">${t('psave')}</button><button data-s="pskip">${t('pskip')}</button></div></div>`}
+function heroTop(){const n=prof&&prof.name;if(!n)return `<span class="hi">${t('hello')}</span><h2>${t('ready')}</h2><p>${t('tag')}</p>`;
+ const fr=[prof.school?t('from',prof.school):'',prof.cls||''].filter(Boolean).join(' · ');
+ return `<span class="hi">${fr?esc(fr):t('ready')}</span><h2>${esc(t('helloN',n))}</h2><p>${t('tag')}</p>`}
+function profSave(pre){const g=s=>($('#'+pre+s).value||'').trim(),nm=g('n'),er=$('#'+pre+'e');
+ if(!nm){$('#'+pre+'n').classList.add('bad');er.style.color='var(--bad)';er.textContent=t('pneed');$('#'+pre+'n').focus();return}
+ prof={name:nm,school:g('s'),cls:g('c')};ls.set('ef_prof',prof);
+ if(pre==='pf')return home();
+ er.style.color='var(--ok)';er.textContent=t('psaved');if(view==='home')home()}
+
+/* ---- Background: media kept in IndexedDB, settings in localStorage ---- */
+const BG0={type:'default',on:true,op:100,blur:0,dark:25,ui:0,fit:'cover',zoom:100,px:50,py:50};
+const isPhone=()=>/Android|iPhone|iPod|Mobi/i.test(navigator.userAgent)||(matchMedia('(pointer:coarse)').matches&&innerWidth<=700);
+const bgs={cfg:{...BG0,...(ls.get('ef_bg',{})||{})},blob:{},name:{},url:{},err:'',note:'',pv:'',pvk:'',wait:0};
+const idbx=(m,fn)=>new Promise((ok,no)=>{const r=indexedDB.open('examforge',1);r.onupgradeneeded=()=>r.result.createObjectStore('media');r.onerror=()=>no(r.error);
+ r.onsuccess=()=>{const db=r.result,tx=db.transaction('media',m),q=fn(tx.objectStore('media'));tx.oncomplete=()=>{db.close();ok(q.result)};tx.onerror=tx.onabort=()=>{db.close();no(tx.error)}}});
+const bgUrl=k=>bgs.url[k]||(bgs.url[k]=URL.createObjectURL(bgs.blob[k]));
+function paint(r,kind,url,c){const i=r.querySelector('img'),v=r.querySelector('video'),o=r.querySelector('.o'),isI=kind==='image'&&url,isV=kind==='video'&&url;
+ i.hidden=!isI;v.hidden=!isV;
+ if(isI&&i.getAttribute('src')!==url)i.src=url;
+ if(isV){if(v.getAttribute('src')!==url)v.src=url;v.muted=true;const p=v.play();if(p&&p.catch)p.catch(()=>{if(r.id==='bg'){bgs.wait=1;bgs.note=t('bgtap')}})}
+ else if(v.getAttribute('src')){v.pause();v.removeAttribute('src');v.load()}
+ [i,v].forEach(m=>{m.style.opacity=c.op/100;m.style.filter='blur('+c.blur+'px)';m.style.objectFit=c.fit;m.style.objectPosition=c.px+'% '+c.py+'%';m.style.transformOrigin=c.px+'% '+c.py+'%';m.style.transform='scale('+(c.zoom/100*1.06).toFixed(3)+')'});o.style.background='rgba(0,0,0,'+c.dark/100+')'}
+function applyBg(){const c=bgs.cfg,k=c.type,ok=!!(c.on&&k!=='default'&&bgs.blob[k]);
+ $('#bg').hidden=!ok;document.documentElement.classList.toggle('bg-on',ok);paint($('#bg'),ok?k:'',ok?bgUrl(k):'',c)}
+const bgSave=()=>ls.set('ef_bg',bgs.cfg);
+function applyUi(){const u=Math.min(70,Math.max(0,+bgs.cfg.ui||0)),r=document.documentElement;r.style.setProperty('--ua',(1-u/100).toFixed(2));r.classList.toggle('ui-t',u>0)}
+applyUi();
+function bgFail(){bgs.err=t('bgvfail');$('#bg').hidden=true;document.documentElement.classList.remove('bg-on')}
+$('#bg-i').onerror=()=>{if($('#bg-i').getAttribute('src'))bgFail()};
+$('#bg-v').onerror=()=>{if($('#bg-v').getAttribute('src'))bgFail()};
+$('#bg-v').addEventListener('playing',()=>{bgs.wait=0;bgs.note=''});
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{if(bgs.wait){bgs.wait=0;const v=$('#bg-v');if(!v.hidden)v.play().catch(()=>{})}},{passive:true}));
+document.addEventListener('visibilitychange',()=>{const v=$('#bg-v');if(v.hidden||!v.getAttribute('src'))return;document.hidden?v.pause():v.play().catch(()=>{})});
+async function bgUpload(kind,f){const im=kind==='image',ok=im?(/\.(png|jpe?g|webp)$/i.test(f.name)||/^image\/(png|jpeg|webp)$/.test(f.type)):(/\.(mp4|webm)$/i.test(f.name)||/^video\/(mp4|webm)$/.test(f.type)),mx=im?25:150;
+ bgs.note='';if(!ok){bgs.err=t(im?'bgbadi':'bgbadv');return renderSettings()}
+ if(f.size>mx*1048576){bgs.err=t('bgbig',mx);return renderSettings()}
+ bgs.err='';if(bgs.url[kind]){URL.revokeObjectURL(bgs.url[kind]);bgs.url[kind]=null}
+ bgs.blob[kind]=f;bgs.name[kind]=f.name;bgs.pv=kind;
+ try{await idbx('readwrite',s=>s.put({blob:f,name:f.name},kind));if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){bgs.note=t('bgmem')}
+ if(bgs.cfg.type===kind)applyBg();renderSettings()}
+async function bgRm(kind){try{await idbx('readwrite',s=>s.delete(kind))}catch(e){}
+ if(bgs.url[kind]){URL.revokeObjectURL(bgs.url[kind]);bgs.url[kind]=null}delete bgs.blob[kind];delete bgs.name[kind];
+ if(bgs.cfg.type===kind){bgs.cfg.type='default';bgSave()}if(bgs.pv===kind)bgs.pv='';bgs.err='';applyBg();renderSettings()}
+(async()=>{try{for(const k of['image','video']){const r=await idbx('readonly',s=>s.get(k));if(r&&r.blob){bgs.blob[k]=r.blob;bgs.name[k]=r.name}}}catch(e){}applyBg()})();
+
+/* ---- Settings overlay (Student Profile + Appearance) ---- */
+function renderSettings(){if($('#st').hidden)return;const c=bgs.cfg,p=prof||{},B=bgs.blob,pv=bgs.pv&&B[bgs.pv]?bgs.pv:(c.type!=='default'&&B[c.type]?c.type:B.image?'image':B.video?'video':'');
+ const ph=isPhone(),ph_h=Math.round(Math.min(.46*innerHeight,340)),pvs=ph?` style="height:${ph_h}px;width:${Math.round(ph_h*innerWidth/innerHeight)}px;margin:8px auto 0"`:'',
+ fb=(k,l)=>`<button class="${c.fit===k?'on':''}" data-s="fit" data-k="${k}" aria-pressed="${c.fit===k}">${l}</button>`,
+ fr=()=>ph?`<h3 class="sub">${t('bfrm')}</h3><p class="mut" style="margin:4px 0">${t('bfrmh')}</p><div class="seg">${fb('cover',t('bfill'))}${fb('contain',t('bfit'))}${fb('fill',t('bstr'))}</div>${sl('zoom',t('bzoom'),100,250,'%')}${sl('px',t('bpx'),0,100,'%')}${sl('py',t('bpy'),0,100,'%')}`:'';
+ const seg=(k,l)=>`<button class="${c.type===k?'on':''}" data-s="type" data-k="${k}" aria-pressed="${c.type===k}">${l}</button>`,
+ sl=(k,l,a,b,u)=>`<label class="sl"><span>${l}</span><input type="range" min="${a}" max="${b}" value="${c[k]}" data-s="sl" data-k="${k}"><output>${c[k]}${u}</output></label>`,
+ up=(k,acc,lab)=>`<div class="up"><label class="btn" for="bgf-${k}">${ic('upload',18)}${lab}</label><input id="bgf-${k}" type="file" hidden accept="${acc}">${B[k]?`<span class="mut fn">${esc(bgs.name[k]||'')}</span><button class="dng sm" data-s="rm" data-k="${k}">${ic('x',16)}${t(k==='image'?'brmi':'brmv')}</button>`:''}</div>`;
+ $('#st-body').innerHTML=`<div class="card"><h2 class="ch"><span class="ci">${ic('cap',20)}</span>${t('sprof')}</h2>${pf('sf',p)}<div class="row"><button class="pri" data-s="psave" data-pre="sf">${t('saveCh')}</button><button class="dng" data-s="preset">${t('preset')}</button></div></div>
+ <div class="card"><h2 class="ch"><span class="ci g">${ic('sliders',20)}</span>${t('sapp')}</h2><h3 class="sub" style="margin-top:8px">${t('btype')}</h3><div class="seg">${seg('default',t('bdef'))}${seg('image',t('bimg'))}${seg('video',t('bvid'))}</div>
+ ${up('image','.png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp',t(B.image?'rpi':'upi'))}${up('video','.mp4,.webm,video/mp4,video/webm',t(B.video?'rpv':'upv'))}
+ <p class="perr" style="color:var(--bad)">${esc(bgs.err||'')}</p><p class="mut" style="margin:4px 0">${esc(bgs.note||'')}</p>
+ <h3 class="sub">${t('bprev')}</h3><div class="pv" id="pv"${pvs}><img alt="" hidden><video muted loop playsinline hidden></video><div class="o"></div>${pv?'':`<span class="pvt">${t('bnone')}</span>`}</div>
+ ${pv&&c.type!==pv?`<div class="row"><button class="pri" data-s="type" data-k="${pv}">${t('bapply')}</button></div>`:''}
+ <label class="tg"><input type="checkbox" data-s="on" ${c.on?'checked':''}> ${t('bon')}</label>
+ ${sl('op',t('bop'),10,100,'%')}${sl('blur',t('bblur'),0,20,'px')}${sl('dark',t('bdark'),0,80,'%')}${sl('ui',t('bui'),0,70,'%')}${fr()}
+ <div class="row"><button data-s="rst">${t('brst')}</button></div></div>`;
+ bgs.pvk=pv;if(pv)paint($('#pv'),pv,bgUrl(pv),c)}
+function stOpen(){mOpen(false);$('#st').hidden=false;document.body.style.overflow='hidden';renderSettings();$('#st-x').focus()}
+function stClose(){$('#st').hidden=true;document.body.style.overflow='';$('#st-body').innerHTML=''}
+document.addEventListener('click',e=>{if(e.target.id==='st')return stClose();
+ const b=e.target.closest('[data-s]');if(!b)return;const k=b.dataset.k;
+ switch(b.dataset.s){
+ case'open':return stOpen();case'close':return stClose();
+ case'psave':return profSave(b.dataset.pre);
+ case'pskip':prof={skip:true};ls.set('ef_prof',prof);return home();
+ case'preset':if(confirm(t('presetq'))){prof=null;ls.del('ef_prof');if(view==='home'||view==='setup'){stClose();home()}else renderSettings()}return;
+ case'type':if(k==='default'||bgs.blob[k]){bgs.cfg.type=k;bgs.err='';if(k!=='default')bgs.pv=k;bgSave();applyBg()}else{bgs.pv=k;bgs.err=t('bgfirst')}return renderSettings();
+ case'rm':return bgRm(k);
+ case'fit':bgs.cfg.fit=k;bgSave();applyBg();return renderSettings();
+ case'rst':bgs.cfg={...BG0};bgs.err='';bgSave();applyBg();applyUi();return renderSettings()}});
+document.addEventListener('input',e=>{const el=e.target;
+ if(el.dataset.s==='sl'){const k=el.dataset.k;bgs.cfg[k]=+el.value;el.nextElementSibling.textContent=el.value+(k==='blur'?'px':'%');applyBg();applyUi();const pv=$('#pv');if(pv&&bgs.pvk)paint(pv,bgs.pvk,bgUrl(bgs.pvk),bgs.cfg)}
+ else if(el.closest&&el.closest('.fld'))el.classList.remove('bad')});
+document.addEventListener('change',e=>{const el=e.target;
+ if(el.dataset.s==='sl')bgSave();
+ else if(el.dataset.s==='on'){bgs.cfg.on=el.checked;bgSave();applyBg()}
+ else if(/^bgf-/.test(el.id)){const f=el.files[0];el.value='';if(f)bgUpload(el.id.slice(4),f)}});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#st').hidden)stClose()});
+$('#sbtn').innerHTML=ic('sliders',20);$('#st-x').innerHTML=ic('x',18);
+
+/* ---- Language, status, install ---- */
+const net=()=>{const n=$('#net');n.textContent=navigator.onLine?t('on'):t('off');n.className=navigator.onLine?'':'off';n.title=n.textContent};
+function applyLang(){document.documentElement.lang=lang;$('#inst').textContent=t('inst');net();
+ $('#lbtn').innerHTML=ic('globe',18)+'<span>'+lang.toUpperCase()+'</span>';$('#lbtn').setAttribute('aria-label',t('lang'));$('#mbtn').setAttribute('aria-label',t('mus'));
+ $('#st-t').textContent=t('stitle');$('#sbtn').setAttribute('aria-label',t('stitle'));$('#st-x').setAttribute('aria-label',t('close'));$('#t-mt').textContent=t('mtitle');$('#t-lp').textContent=t('repeat');$('#m-x').setAttribute('aria-label',t('close'));$('#m-vol').setAttribute('aria-label',t('vol'));
+ $('#m-play').innerHTML=ic('play',18)+t('play');$('#m-pause').innerHTML=ic('pause',18)+t('pause');$('#m-stop').innerHTML=ic('stop',18)+t('stop');mUI()}
+$('#lbtn').onclick=()=>{lang=lang==='en'?'id':'en';ls.set('ef_lang',lang);applyLang();view==='exam'&&ex?draw():view==='result'&&res?result():view==='materi'&&bank?matV():view==='key'&&bank?keyV():view==='setup'?setup():view==='guide'?guideV():home();renderSettings()};
+$('#mbtn').innerHTML=ic('music',20);$('#m-x').innerHTML=ic('x',18);$('#m-vic').innerHTML=ic('vol',20);$('#m-prev').innerHTML=ic('prev',18);$('#m-next').innerHTML=ic('next',18);
+addEventListener('online',net);addEventListener('offline',net);
+let dp;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;$('#inst').style.display='block'});
+$('#inst').onclick=()=>{if(dp){dp.prompt();dp=null;$('#inst').style.display='none'}};
+if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+function fatal(e){const m=String(e&&(e.stack||e.message)||e).slice(0,400);
+ app.innerHTML=`<div class="card"><h2>Something went wrong · Terjadi kesalahan</h2><p class="mut">Please send a screenshot of this message. / Mohon kirim tangkapan layar pesan ini.</p><pre style="white-space:pre-wrap;font-size:.8rem;background:#f0f4ff;border-radius:12px;padding:10px">${esc(m)}</pre>
+ <div class="row"><button class="pri" onclick="location.reload()">Reload / Muat ulang</button><button class="dng" id="rst">Reset saved data / Hapus data tersimpan</button></div></div>`;
+ $('#rst').onclick=()=>{if(confirm('This deletes saved question banks and history. / Ini menghapus bank soal dan riwayat tersimpan.')){Object.keys(localStorage).filter(k=>k.indexOf('ef_')===0).forEach(k=>localStorage.removeItem(k));location.reload()}}}
+addEventListener('error',ev=>{if(!app.children.length)fatal(ev.error||ev.message)});
+try{home()}catch(e){fatal(e)}
+try{applyLang()}catch(e){console.error(e)}
+</script></body></html>
